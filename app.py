@@ -28,21 +28,23 @@ db = client.beerdb
 
 # 토큰 생성에 사용될 Secret Key를 flask 환경 변수에 등록
 app.config.update(
-			DEBUG = True,
-			JWT_SECRET_KEY = SECRET_KEY
-		)
+    DEBUG=True,
+    JWT_SECRET_KEY=SECRET_KEY
+)
 
 # JWT 확장 모듈을 flask 어플리케이션에 등록
 jwt = JWTManager(app)
 
 # JWT 쿠키 저장
-app.config['JWT_COOKIE_SECURE'] = False  # https를 통해서만 cookie가 갈 수 있는지 (production 에선 True)
+# https를 통해서만 cookie가 갈 수 있는지 (production 에선 True)
+app.config['JWT_COOKIE_SECURE'] = False
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-app.config['JWT_ACCESS_COOKIE_PATH'] = '/'  # access cookie를 보관할 url (Frontend 기준)
-app.config['JWT_REFRESH_COOKIE_PATH'] = '/'  # refresh cookie를 보관할 url (Frontend 기준)
+# access cookie를 보관할 url (Frontend 기준)
+app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
+# refresh cookie를 보관할 url (Frontend 기준)
+app.config['JWT_REFRESH_COOKIE_PATH'] = '/'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
-
 
 
 @app.route("/")
@@ -56,7 +58,7 @@ def main():
             beer["_id"] = str(beer["_id"])
         return render_template("index.html", beersList=beers)
     else:
-        beers = db.beers.find({}) # TODO: join reviews
+        beers = db.beers.find({})  # TODO: join reviews
         beers = list(beers)
         for beer in beers:
             beer["_id"] = str(beer["_id"])
@@ -69,10 +71,12 @@ def show_beer(id):
     try:
         username = get_jwt_identity()
         if username is None:
-            beer = db.beers.find_one({"_id": ObjectId(id)}) # TODO: join reviews
+            beer = db.beers.find_one(
+                {"_id": ObjectId(id)})  # TODO: join reviews
             return render_template("detail.html", beer=beer)
         else:
-            beer = db.beers.find_one({"_id": ObjectId(id)}) # TODO: join reviews + user's review
+            # TODO: join reviews + user's review
+            beer = db.beers.find_one({"_id": ObjectId(id)})
             return render_template("detail.html", beer=beer, username=username)
 
     except Exception as e:
