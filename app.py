@@ -26,6 +26,10 @@ client = MongoClient(MONGO_DB_URL, 27017)
 db = client.beerdb
 
 
+@app.route("/")
+def main():
+   return render_template("index.html")
+
 @app.route("/api/beer/get", methods=["GET"])
 def get_beer():
    # params에서 맥주 아이디 체크
