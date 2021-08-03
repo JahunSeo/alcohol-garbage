@@ -19,7 +19,6 @@ except:
 
 # print("** SECRET_KEY **", SECRET_KEY)
 # print("** MONGO_DB_URL **", MONGO_DB_URL)
-MONGO_DB_URL = "localhost"
 
 app = Flask(__name__)
 client = MongoClient(MONGO_DB_URL, 27017)
