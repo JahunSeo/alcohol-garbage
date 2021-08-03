@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+    />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
+    <title>알쓰극복일기</title>
+    <style type="text/css">
+      .base-section {
+        position: relative;
+        z-index: 1;
+      }
+
+      .login-section {
+        position: relative;
+        display: none;
+        z-index: 3;
+      }
+
+      .signUp-section {
+        position: relative;
+        display: none;
+        z-index: 3;
+      }
+
+      #login-overlay {
+        position: fixed;
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        cursor: pointer;
+      }
+
+      #login-popup {
+        position: fixed;
+        display: inline;
+        left: 30%;
+        right: 30%;
+        width: 430px;
+        height: auto;
+        padding: 40px;
+        background-color: rgba(100, 300, 100, 1);
+        margin: 5% auto;
+        border-radius: 10px;
+        display: inline-block;
+    }
+    
+    #signUp-overlay {
+      position: fixed;
+      display: block;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      cursor: pointer;
+    }
+
+      #signUp-popup {
+        position: fixed;
+        left: 30%;
+        right: 30%;
+        width: 470px;
+        height: auto;
+        padding: 40px;
+        background-color: rgba(100, 300, 100, 1);
+        margin: 5% auto;
+        border-radius: 10px;
+        display: inline-block;
+    }
+    
+    #close-button {
+      float: right;
+    }
+
+    #login-username-box, #login-password-box #signUp-repassword-box #signUp-username-box #signUp-password-box
+    {
+      width: 350px;
+    }
+
+      .input {
+        font-style: italic;
+      }
+
+      .submitField {
+        text-align: center;
+      }
+
+    .test-box {
+        position: fixed;
+        width: 700px;
+        height: 700px;
+        padding: 40px;
+
+        background-color: yellow;
+    }
+    .login-user-message {
+      font-weight: bold;
+    }
+
+    </style>
+
+     <script>
+      function showLogin() {
+        $('#login-section').show();
+      }
+
+      function closeLogin() {
+        $('#login-section').hide();
+      }
+
+      function submitLogin() {
+        $.ajax({
+          type: "POST",
+          url: "/api/user/login",
+          data: { 
+              username : $('#login-username-box').val(), 
+              password : $('#login-password-box').val(), 
+              },
+          success: function(response) {
+            if (response['status'] == 200) {
+              alert('로그인이 완료되었습니다.')
+              window.location.href='/'
+            } else{
+              alert(response['msg'])
+            }
+          },
+        });
+      }
+
+      function showLogout() {
+        window.location.href='/'
+      }
+
+      function showSignUp() {
+          $('#login-section').hide();
+          $('#signUp-section').show();
+      }
+
+      function closeSignUp() {
+        $('#signUp-section').hide();
+      }
+
+      function submitSignUp() {
+        $.ajax({
+          type: "POST",
+          url: "/api/user/register",
+          data: { 
+              username : $('#signUp-username-box').val(), 
+              password : $('#signUp-password-box').val(), 
+              },
+          success: function(response) {
+            console.log(response)
+            if (response['status'] == 200) {
+              alert('회원가입이 완료되었습니다.')
+              window.location.href='/'
+            } else{
+              alert(response['msg'])
+            }
+          },
+        });
+      }
+    </script>
+  </head>
+  <body class="mainBody">
+  <div class="login-section" id="login-section">
+   <div id="login-overlay"></div>
+    <div class="login-wrap" id="login-popup">
+      <button class="button is-dark" id="close-button" onclick="closeLogin()">CLOSE</button>
+        <h1 class="title is-1">LOGIN</h1>
+        <div class="username-field">
+          <label class="label" id="login-label-username">Username</label>
+          <div class="control">
+            <input class="input" type="text" id="login-username-box" placeholder="Username을 입력해주세요">
+          </div>
+        </div>
+        <br/>
+        <div class="pw-field">
+          <label class="label" id="login-label-password">Password</label>
+          <div class="control">
+            <input class="input" type="password" id="login-password-box" placeholder="Password를 입력해주세요">
+          </div>
+        </div>
+        <br/>   
+    <div class="submitField">
+    <p class="control">
+        <button class="button is-primary is-rounded" onClick="submitLogin()">
+        Submit
+        </button>
+        <button class="button is-success is-rounded" onclick="showSignUp()">
+        Sign Up
+        </button>
+    </p>
+    </div>
+    </div>
+    </div>
+    </div>
+
+
+  <div class="signUp-section" id="signUp-section">
+    <div id="signUp-overlay"></div>
+    <div class="signUp-wrap" id="signUp-popup">
+      <button class="button is-dark" id="close-button" onclick="closeSignUp()">CLOSE</button>
+        <h1 class="title is-1">Sign Up</h1>
+    <div class="username-field">
+          <label class="label" id="signup-label-username">Username</label>
+          <div class="control">
+            <input class="input" type="text" id="signUp-username-box" placeholder="Username을 입력해주세요">
+          </div>
+        </div>
+        <br/>
+        <div class="pw-field">
+          <label class="label" id="signup-label-password">Password</label>
+          <div class="control">
+            <input class="input" type="password" id="signUp-password-box" placeholder="Password를 입력해주세요">
+          </div>
+        </div>
+        <br/>
+        <div class="pw-check-field">
+          <label class="label" id="signup-label-repassword">Re_Password</label>
+          <div class="control">
+            <input class="input" type="password" id="signUp-repassword-box" placeholder="Password를 다시 한번 입력해주세요">
+          </div>
+        </div>
+        <br/>
+    <div class="submitField">
+    <p class="control">
+        <button class="button is-primary is-rounded" onclick="submitSignUp()">
+        Submit
+        </button>
+    </p>
+    </div>
+    </div>
+    </div>
+    </div>
+
+    <div class="section" id="base-section">
+      <div class="headerBox">
+        {% if username %}
+        <div class="login-user-message">{{ username }}님 안녕하세요 :)</div>
+        <br/>
+        <button class="button is-success is-rounded" onclick="showLogout()">로그아웃</button>
+        {% else %}
+        <button class="button is-success is-rounded" onclick="showLogin()">로그인</button>
+        {% endif %}
+        
+      </div>
+      <div class="titleBox">
+        <div class="column has-text-centered">
+          <h1 class="title mainTitle">알쓰 극복 일기</h1>
+        </div>
+      </div>
+      
+      {% block content %}
+      
+      {% endblock %}
+  </body>
+</html>
