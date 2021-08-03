@@ -1,10 +1,6 @@
-<<<<<<< HEAD
 from routes import *
 from flask import Flask, render_template, redirect, url_for
-=======
-from flask import Flask, render_template, redirect, url_for, make_response
-from flask_wtf.csrf import CSRFProtect
->>>>>>> johnny_jwt-rebuild
+# from flask_wtf.csrf import CSRFProtect
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
