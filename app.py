@@ -28,6 +28,9 @@ db = client.beerdb
 
 @app.route("/")
 def main():
+   beers = db.beers.find({}, {"_id": False})
+   beers = list(beers)
+   print(121212, beers)
    return render_template("index.html")
 
 @app.route("/api/beer/get", methods=["GET"])
