@@ -14,9 +14,8 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
-    <!-- <link rel="stylesheet" href="../css/cards.css" /> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
     <title>알쓰극복일기</title>
-
     <style type="text/css">
       .base-section {
         position: relative;
@@ -50,9 +49,11 @@
 
       #login-popup {
         position: fixed;
+        display: inline;
         left: 30%;
         right: 30%;
         width: 45%;
+        min-width: none;
         height: auto;
         padding: 40px;
         background-color: rgba(100, 300, 100, 1);
@@ -91,6 +92,15 @@
 
       .submitField {
         text-align: center;
+      }
+
+      .id-field {
+        display: inline;
+        white-space: nowrap      
+      }
+      .pw-field {
+        display: inline;
+        white-space: nowrap   
       }
     </style>
     <script>
