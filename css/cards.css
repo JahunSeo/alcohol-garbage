@@ -1,0 +1,23 @@
+.mainBody {
+  padding: 0 5rem 0 5rem;
+}
+.searchBox {
+  align-items: center;
+}
+
+.titleBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+}
+.mainTitle {
+  padding-left: 2rem;
+  min-width: 500px;
+}
+
+.headerBox {
+  float: right;
+  padding: auto;
+  margin: 0;
+}
