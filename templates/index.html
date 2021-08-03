@@ -265,7 +265,14 @@
     </div>
 
     <div class="section" id="base-section">
-      <div class="headerBox"><button class="button is-success is-rounded" onclick="showLogin()">로그인</button></div>
+      <div class="headerBox">
+        {% if username %}
+        <div>{{ username }}</div>
+        {% else %}
+        <button class="button is-success is-rounded" onclick="showLogin()">로그인</button>
+        {% endif %}
+        
+      </div>
       <div class="titleBox">
         <div class="column has-text-centered">
           <h1 class="title mainTitle">알쓰 극복 일기</h1>
