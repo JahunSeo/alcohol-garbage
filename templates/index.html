@@ -95,9 +95,14 @@
 
     </style>
      <script>
-      function login() {
-          $('#login-section').show();
-      
+      function showLogin() {
+        console.log("show login popup!!")
+        $('#login-section').show();
+             
+      }
+
+      function submitLogin() {
+        console.log("submit login info!!")
         $.ajax({
           type: "POST",
           url: "/api/user/login",
@@ -106,6 +111,7 @@
               password : $('#login-user-password').val(), 
               },
           success: function(response) {
+            console.log(response)
             if (response['status'] == 200) {
               alert('로그인이 완료되었습니다.')
               window.location.href='/'
@@ -113,12 +119,17 @@
               alert(response['msg'])
             }
           }
-        });      
+        }); 
       }
       
-      function singUp() {
+      function showSignUp() {
+         console.log("show signup popup!!")
           $('#login-section').hide();
           $('#signUp-section').show();
+      }
+
+      function submitSignUp() {
+        console.log("submit signup popup!!")
 
         $.ajax({
           type: "POST",
@@ -179,10 +190,10 @@
     <br/>
     <div class="submitField" >
     <p class="control">
-        <button class="button is-primary is-rounded">
+        <button class="button is-primary is-rounded" onClick="submitLogin()">
         Submit
         </button>
-        <button class="button is-success is-rounded" onclick="singUp()">
+        <button class="button is-success is-rounded" onclick="showSignUp()">
         Sign Up
         </button>
     </p>
@@ -243,7 +254,7 @@
     <br/>
     <div class="submitField">
     <p class="control">
-        <button class="button is-primary is-rounded">
+        <button class="button is-primary is-rounded" onclick="submitSignUp()">
         Submit
         </button>
     </p>
@@ -254,7 +265,7 @@
     </div>
 
     <div class="section" id="base-section">
-      <div class="headerBox"><button class="button is-success is-rounded" onclick="login()">로그인</button></div>
+      <div class="headerBox"><button class="button is-success is-rounded" onclick="showLogin()">로그인</button></div>
       <div class="titleBox">
         <div class="column has-text-centered">
           <h1 class="title mainTitle">알쓰 극복 일기</h1>

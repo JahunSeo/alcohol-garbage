@@ -40,6 +40,7 @@ def user_register():
 @routes.route("/api/user/login", methods=["POST"])
 def user_login():
    try:
+      print(3434343434343434)
       # 데이터 확인하기
       formdata = request.get_json()
       formdata = request.form # temp
