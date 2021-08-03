@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 
@@ -26,15 +26,18 @@ db = client.beerdb
 def main():
     beers = db.beers.find({})
     beers = list(beers)
-    for item in beers:
-        item["_id"] = str(item["_id"])
-
+    for beer in beers:
+        beer["_id"] = str(beer["_id"])
     return render_template("index.html", beersList=beers)
+
 
 @app.route("/beer/<id>")
 def show_beer(id):
-    beer = db.beers.find_one({"_id": ObjectId(id)})
-    return render_template("detail.html", beer=beer)
+    try:
+        beer = db.beers.find_one({"_id": ObjectId(id)})
+        return render_template("detail.html", beer=beer)
+    except Exception as e:
+        return redirect(url_for('main'))
 
 #### #### #### #### ####
 #### #### API  #### ####
