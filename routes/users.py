@@ -7,7 +7,7 @@ import bcrypt
 
 from app import db, SECRET_KEY
 
-@routes.route("/api/user/register")
+@routes.route("/api/user/register", methods=["POST"])
 def user_register():
    try:
       # 데이터 확인하기
@@ -37,7 +37,7 @@ def user_register():
       return jsonify({"status": 500, "msg": str(e)})
 
 
-@routes.route("/api/user/login")
+@routes.route("/api/user/login", methods=["POST"])
 def user_login():
    try:
       # 데이터 확인하기
