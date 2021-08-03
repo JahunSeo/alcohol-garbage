@@ -52,12 +52,13 @@
         position: fixed;
         left: 30%;
         right: 30%;
-        width: 45%;
+        width: 430px;
         height: auto;
         padding: 40px;
         background-color: rgba(100, 300, 100, 1);
         margin: 5% auto;
         border-radius: 10px;
+        display: inline-block;
     }
     
     #signUp-overlay {
@@ -77,12 +78,22 @@
         position: fixed;
         left: 30%;
         right: 30%;
-        width: 45%;
+        width: 470px;
         height: auto;
         padding: 40px;
         background-color: rgba(100, 300, 100, 1);
         margin: 5% auto;
-        border-radius: 20px;
+        border-radius: 10px;
+        display: inline-block;
+    }
+    
+    #close-button {
+      float: right;
+    }
+
+    #login-username-box, #login-password-box #signUp-repassword-box #signUp-username-box #signUp-password-box
+    {
+      width: 350px;
     }
 
     .input {
@@ -93,25 +104,35 @@
       text-align: center;
     }
 
+    .test-box {
+        position: fixed;
+        width: 700px;
+        height: 700px;
+        padding: 40px;
+
+        background-color: yellow;
+    }
+
     </style>
+
      <script>
       function showLogin() {
-        console.log("show login popup!!")
         $('#login-section').show();
-             
+      }
+
+      function closeLogin() {
+        $('#login-section').hide();
       }
 
       function submitLogin() {
-        console.log("submit login info!!")
         $.ajax({
           type: "POST",
           url: "/api/user/login",
           data: { 
-              username : $('#login-user-name').val(), 
-              password : $('#login-user-password').val(), 
+              username : $('#login-username-box').val(), 
+              password : $('#login-password-box').val(), 
               },
           success: function(response) {
-            console.log(response)
             if (response['status'] == 200) {
               alert('로그인이 완료되었습니다.')
               window.location.href='/'
@@ -123,20 +144,21 @@
       }
       
       function showSignUp() {
-         console.log("show signup popup!!")
           $('#login-section').hide();
           $('#signUp-section').show();
       }
 
-      function submitSignUp() {
-        console.log("submit signup popup!!")
+      function closeSignUp() {
+        $('#signUp-section').hide();
+      }
 
+      function submitSignUp() {
         $.ajax({
           type: "POST",
           url: "/api/user/register",
           data: { 
-              username : $('#signUp-user-name').val(), 
-              password : $('#signUp-user-password').val(), 
+              username : $('#signUp-username-box').val(), 
+              password : $('#signUp-password-box').val(), 
               },
           success: function(response) {
             console.log(response)
@@ -153,42 +175,26 @@
     </script>
   </head>
   <body class="mainBody">
-
   <div class="login-section" id="login-section">
    <div id="login-overlay"></div>
     <div class="login-wrap" id="login-popup">
+      <button class="button is-dark" id="close-button" onclick="closeLogin()">CLOSE</button>
         <h1 class="title is-1">LOGIN</h1>
-    <div class="id-field">
-        <div class="field is-horizontal">
-        <div class="field-label is-normal">
-            <label class="label">Username : </label>
+        <div class="username-field">
+          <label class="label" id="login-label-username">Username</label>
+          <div class="control">
+            <input class="input" type="text" id="login-username-box" placeholder="Username을 입력해주세요">
+          </div>
         </div>
-        <div class="field-body">
-            <div class="field">
-            <div class="control">
-                <input class="input" type="text" name="ID" id="login-user-name" placeholder="Username을 입력해주세요">
-            </div>
-            </div>
+        <br/>
+        <div class="pw-field">
+          <label class="label" id="login-label-password">Password</label>
+          <div class="control">
+            <input class="input" type="password" id="login-password-box" placeholder="Password를 입력해주세요">
+          </div>
         </div>
-    </div>
-    </div>
-    <br/>
-    <div class="pw-field">
-        <div class="field is-horizontal">
-        <div class="field-label is-normal">
-            <label class="label" id="id-name">PW : </label>
-        </div>
-        <div class="field-body">
-            <div class="field">
-            <div class="control">
-                <input class="input" type="password" name="password" id="login-user-password" placeholder="패스워드를 입력해주세요">
-            </div>
-            </div>
-        </div>
-    </div>
-    </div>
-    <br/>
-    <div class="submitField" >
+        <br/>   
+    <div class="submitField">
     <p class="control">
         <button class="button is-primary is-rounded" onClick="submitLogin()">
         Submit
@@ -198,60 +204,37 @@
         </button>
     </p>
     </div>
+    </div>
+    </div>
+    </div>
 
-    </div>
-    </div>
-    </div>
 
   <div class="signUp-section" id="signUp-section">
     <div id="signUp-overlay"></div>
     <div class="signUp-wrap" id="signUp-popup">
+      <button class="button is-dark" id="close-button" onclick="closeSignUp()">CLOSE</button>
         <h1 class="title is-1">Sign Up</h1>
     <div class="username-field">
-        <div class="field is-horizontal">
-        <div class="field-label is-normal">
-            <label class="label">Username : </label>
+          <label class="label" id="signup-label-username">Username</label>
+          <div class="control">
+            <input class="input" type="text" id="signUp-username-box" placeholder="Username을 입력해주세요">
+          </div>
         </div>
-        <div class="field-body">
-            <div class="field">
-            <div class="control">
-                <input class="input" type="text" name="username" id="signUp-user-name" placeholder="username을 입력해주세요">
-            </div>
-            </div>
+        <br/>
+        <div class="pw-field">
+          <label class="label" id="signup-label-password">Password</label>
+          <div class="control">
+            <input class="input" type="password" id="signUp-password-box" placeholder="Password를 입력해주세요">
+          </div>
         </div>
-    </div>
-    </div>
-    <br/>
-    <div class="pw-field">
-        <div class="field is-horizontal">
-        <div class="field-label is-normal">
-            <label class="label">PW : </label>
+        <br/>
+        <div class="pw-check-field">
+          <label class="label" id="signup-label-repassword">Re_Password</label>
+          <div class="control">
+            <input class="input" type="password" id="signUp-repassword-box" placeholder="Password를 다시 한번 입력해주세요">
+          </div>
         </div>
-        <div class="field-body">
-            <div class="field">
-            <div class="control">
-                <input class="input" type="password" name="password" id="signUp-user-password" placeholder="패스워드를 입력해주세요">
-            </div>
-            </div>
-        </div>
-    </div>
-    </div>
-    <br/>
-    <div class="pw-check-field">
-    <div class="field is-horizontal">
-    <div class="field-label is-normal">
-        <label class="label">RE_PW : </label>
-    </div>
-    <div class="field-body">
-        <div class="field">
-        <div class="control">
-            <input class="input" type="password" name="password" id="signUp-user-repassword" placeholder="패스워드를 다시 한번 입력해주세요">
-        </div>
-        </div>
-        </div>
-    </div>
-    </div>
-    <br/>
+        <br/>
     <div class="submitField">
     <p class="control">
         <button class="button is-primary is-rounded" onclick="submitSignUp()">
@@ -259,7 +242,6 @@
         </button>
     </p>
     </div>
-
     </div>
     </div>
     </div>
