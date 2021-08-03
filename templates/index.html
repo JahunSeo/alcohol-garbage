@@ -4,12 +4,66 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<<<<<<< HEAD
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
     <link rel="stylesheet" href="../css/cards.css" />
     <title>알쓰극복일기</title>
+        <style type="text/css">
+    #login-overlay {
+        position: fixed;
+        display: block;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0,0,0,0.5);
+        cursor: pointer;
+    }
+
+    #login-popup {
+        position: fixed;
+        left: 33%;
+        right: 33%;
+        width: 30%;
+        height: auto;
+        padding: 40px;
+        border: 2px solid;
+        background-color: rgba(0, 300, 0, 0.4);
+        margin: 5% auto;
+    }
+    
+    .input {
+        font-style: italic;
+    }
+
+    </style>
+     <script>
+      function login() {
+        $.ajax({
+          type: "POST",
+          url: "/api/login",
+          data: {
+            userid_give: $("#userid").val(),
+            pw_give: $("#userpw").val(),
+          },
+          success: function (response) {
+            if (response["result"] == "success") {
+              $.cookie("mytoken", response["token"]);
+              //로그인 정상 완료 시, 토큰 받아옴. 받아온 토큰을 mytoken이라는 키 값으로 쿠키에 저장//
+              alert("로그인이 완료되었습니다.");
+              window.location.href = "/";
+            } else {
+              alert(response["msg"]);
+            }
+          },
+        });
+      }
+    </script>
   </head>
   <body class="mainBody">
     <div class="section">
@@ -206,6 +260,44 @@
           </div>
         </div>
       </div>
+
+
+<div id="login-overlay"></div>
+    <div class="login-wrap" id="login-popup">
+        <h1 class="title is-1">Login</h1>
+    <div class="id-field ">
+    <p class="control has-icons-left has-icons-right">
+        <input class="input" type="text" name="ID" placeholder="ID를 입력해주세요">
+        <span class="icon is-small is-left">
+        <i class="fas fa-envelope"></i>
+        </span>
+        <span class="icon is-small is-right">
+        <i class="fas fa-check"></i>
+        </span>
+    </p>
+    <br/>
+    </div>
+    <div class="pw-field">
+    <p class="control has-icons-left">
+        <input class="input" type="password" name="password" placeholder="패스워드를 입력해주세요">
+        <span class="icon is-small is-left">
+        <i class="fas fa-lock"></i>
+        </span>
+    </p>
+    </div>
+    <br/>
+    <div class="submitField">
+    <p class="control">
+        <button class="button is-primary is-rounded">
+        Login
+        </button>
+        <button class="button is-success is-rounded">
+        Sing Up
+        </button>
+    </p>
+    </div>
+
+    </div>
     </div>
   </body>
 </html>
