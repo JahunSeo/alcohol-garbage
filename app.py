@@ -14,7 +14,7 @@ try:
    MONGO_DB_URL = tree.find('string[@name="MONGO_DB_URL"]').text
 except:
    print("ERROR!!! check your 'keys.xml' file")
-   SECRET_KEY = "test1234"
+   SECRET_KEY = "jungle1234"
    MONGO_DB_URL = "localhost"
 
 # print("** SECRET_KEY **", SECRET_KEY)
