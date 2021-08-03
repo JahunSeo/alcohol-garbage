@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
-from datetime import datetime
+import datetime
 from bson.objectid import ObjectId
 import jwt
 import bcrypt
@@ -32,6 +32,7 @@ def main():
    print(121212, beers)
    return render_template("index.html")
 
+
 @app.route("/api/beer/get", methods=["GET"])
 def get_beer():
    # params에서 맥주 아이디 체크
@@ -39,6 +40,7 @@ def get_beer():
    # 다른 사람들의 평가 시간 순 정렬
    beer = {}
    return jsonify({"status": 200, "msg": "맥주 정보 불러오기 성공", "beer": beer})
+
 
 @app.route("/api/beer/list")
 def get_beer_list():
@@ -105,6 +107,37 @@ def user_register():
    except Exception as e:
       return jsonify({"status": 500, "msg": str(e)})
 
+
+@app.route("/api/user/login")
+def user_login():
+   try:
+      # 데이터 확인하기
+      formdata = request.get_json()
+      formdata = request.form # temp
+      username = formdata.get("username")
+      password = formdata.get("password")
+      if not username:
+         raise Exception("유저 이름이 없습니다.")
+      if not password:
+         raise Exception("유저 비밀번호가 없습니다.")
+      # 유저 찾기
+      user = db.users.find_one({"username": username})
+      if user is None:
+         raise Exception("잘못된 유저 이름입니다.")
+      # 비밀번호 체크하기
+      check_pw = bcrypt.checkpw(password.encode('utf-8'), user["password"].encode('utf-8'))
+      print(username, password, check_pw)
+      if not check_pw:
+         raise Exception("잘못된 비밀번호입니다.")
+      payload = {
+         "username": username,
+         "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=30)
+      }
+      token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
+      return jsonify({"status": 200, "msg": "사용자 로그인 성공", "token": token})
+
+   except Exception as e:
+      return jsonify({"status": 500, "msg": str(e)})
 
 
 if __name__ == '__main__':
