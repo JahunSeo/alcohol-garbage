@@ -4,14 +4,37 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<<<<<<< HEAD
+    <script
+    src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"
+    ></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
     <link rel="stylesheet" href="../css/cards.css" />
     <title>알쓰극복일기</title>
-        <style type="text/css">
+
+    <style type="text/css">
+    .base-section {
+        position: relative;
+        z-index: 1;
+    }
+
+    .login-section {
+        position: relative;
+        display: none;
+        z-index: 3;
+    }
+
+    .signUp-section {
+        position: relative;
+        display: none;
+        z-index: 3;
+    }
+
     #login-overlay {
         position: fixed;
         display: block;
@@ -27,47 +50,211 @@
 
     #login-popup {
         position: fixed;
-        left: 33%;
-        right: 33%;
-        width: 30%;
+        left: 30%;
+        right: 30%;
+        width: 45%;
         height: auto;
         padding: 40px;
-        border: 2px solid;
-        background-color: rgba(0, 300, 0, 0.4);
+        background-color: rgba(100, 300, 100, 1);
         margin: 5% auto;
+        border-radius: 10px;
     }
     
+    #signUp-overlay {
+      position: fixed;
+      display: block;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0,0,0,0.5);
+      cursor: pointer;
+    }
+
+    #signUp-popup {
+        position: fixed;
+        left: 30%;
+        right: 30%;
+        width: 45%;
+        height: auto;
+        padding: 40px;
+        background-color: rgba(100, 300, 100, 1);
+        margin: 5% auto;
+        border-radius: 20px;
+    }
+
     .input {
         font-style: italic;
+    }
+
+    .submitField {
+      text-align: center;
     }
 
     </style>
      <script>
       function login() {
+          $('#login-section').show();
+      
         $.ajax({
           type: "POST",
-          url: "/api/login",
-          data: {
-            userid_give: $("#userid").val(),
-            pw_give: $("#userpw").val(),
-          },
-          success: function (response) {
-            if (response["result"] == "success") {
-              $.cookie("mytoken", response["token"]);
-              //로그인 정상 완료 시, 토큰 받아옴. 받아온 토큰을 mytoken이라는 키 값으로 쿠키에 저장//
-              alert("로그인이 완료되었습니다.");
-              window.location.href = "/";
-            } else {
-              alert(response["msg"]);
+          url: "/api/user/login",
+          data: { 
+              username : $('#login-user-name').val(), 
+              password : $('#login-user-password').val(), 
+              },
+          success: function(response) {
+            if (response['status'] == 200) {
+              alert('회원가입이 완료되었습니다.')
+              window.location.href='/'
+            } else{
+              alert(response['msg'])
             }
-          },
+          }
+        });      
+      }
+      
+      function singUp() {
+          $('#login-section').hide();
+          $('#signUp-section').show();
+
+        $.ajax({
+          type: "POST",
+          url: "/api/user/register",
+          data: { 
+              username : $('#signUp-user-name').val(), 
+              password : $('#signUp-user-password').val(), 
+              },
+          success: function(response) {
+            console.log(response)
+            if (response['status'] == 200) {
+              alert('회원가입이 완료되었습니다.')
+              window.location.href='/'
+            } else{
+              alert(response['msg'])
+            }
+          }
         });
       }
+        
     </script>
   </head>
   <body class="mainBody">
-    <div class="section">
-      <div class="headerBox"><button>로그인</button></div>
+
+  <div class="login-section" id="login-section">
+   <div id="login-overlay"></div>
+    <div class="login-wrap" id="login-popup">
+        <h1 class="title is-1">LOGIN</h1>
+    <div class="id-field">
+        <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label">Username : </label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+            <div class="control">
+                <input class="input" type="text" name="ID" id="login-user-name" placeholder="Username을 입력해주세요">
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br/>
+    <div class="pw-field">
+        <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label" id="id-name">PW : </label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+            <div class="control">
+                <input class="input" type="password" name="password" id="login-user-password" placeholder="패스워드를 입력해주세요">
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br/>
+    <div class="submitField" >
+    <p class="control">
+        <button class="button is-primary is-rounded">
+        Submit
+        </button>
+        <button class="button is-success is-rounded" onclick="singUp()">
+        Sign Up
+        </button>
+    </p>
+    </div>
+
+    </div>
+    </div>
+    </div>
+
+  <div class="signUp-section" id="signUp-section">
+    <div id="signUp-overlay"></div>
+    <div class="signUp-wrap" id="signUp-popup">
+        <h1 class="title is-1">Sign Up</h1>
+    <div class="username-field">
+        <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label">Username : </label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+            <div class="control">
+                <input class="input" type="text" name="username" id="signUp-user-name" placeholder="username을 입력해주세요">
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br/>
+    <div class="pw-field">
+        <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label">PW : </label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+            <div class="control">
+                <input class="input" type="password" name="password" id="signUp-user-password" placeholder="패스워드를 입력해주세요">
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br/>
+    <div class="pw-check-field">
+    <div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label">RE_PW : </label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+        <div class="control">
+            <input class="input" type="password" name="password" id="signUp-user-repassword" placeholder="패스워드를 다시 한번 입력해주세요">
+        </div>
+        </div>
+        </div>
+    </div>
+    </div>
+    <br/>
+    <div class="submitField">
+    <p class="control">
+        <button class="button is-primary is-rounded">
+        Submit
+        </button>
+    </p>
+    </div>
+
+    </div>
+    </div>
+    </div>
+
+    <div class="section" id="base-section">
+      <div class="headerBox"><button class="button is-success is-rounded" onclick="login()">로그인</button></div>
       <div class="titleBox">
         <div class="column has-text-centered">
           <h1 class="title mainTitle">알쓰 극복 일기</h1>
@@ -262,42 +449,6 @@
       </div>
 
 
-<div id="login-overlay"></div>
-    <div class="login-wrap" id="login-popup">
-        <h1 class="title is-1">Login</h1>
-    <div class="id-field ">
-    <p class="control has-icons-left has-icons-right">
-        <input class="input" type="text" name="ID" placeholder="ID를 입력해주세요">
-        <span class="icon is-small is-left">
-        <i class="fas fa-envelope"></i>
-        </span>
-        <span class="icon is-small is-right">
-        <i class="fas fa-check"></i>
-        </span>
-    </p>
-    <br/>
-    </div>
-    <div class="pw-field">
-    <p class="control has-icons-left">
-        <input class="input" type="password" name="password" placeholder="패스워드를 입력해주세요">
-        <span class="icon is-small is-left">
-        <i class="fas fa-lock"></i>
-        </span>
-    </p>
-    </div>
-    <br/>
-    <div class="submitField">
-    <p class="control">
-        <button class="button is-primary is-rounded">
-        Login
-        </button>
-        <button class="button is-success is-rounded">
-        Sing Up
-        </button>
-    </p>
-    </div>
-
-    </div>
-    </div>
+ 
   </body>
 </html>
