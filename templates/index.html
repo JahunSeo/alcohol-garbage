@@ -247,9 +247,12 @@
 
     <div class="section" id="base-section">
       <div class="headerBox">
-        <button class="button is-success is-rounded" onclick="showLogin()">
-          로그인
-        </button>
+        {% if username %}
+        <div>{{ username }}</div>
+        {% else %}
+        <button class="button is-success is-rounded" onclick="showLogin()">로그인</button>
+        {% endif %}
+        
       </div>
       <div class="titleBox">
         <div class="column has-text-centered">
