@@ -8,7 +8,7 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
-    <link rel="stylesheet" href="../css/cards.css" />
+    <!-- <link rel="stylesheet" href="../css/cards.css" /> -->
     <title>알쓰극복일기</title>
   </head>
   <body class="mainBody">
@@ -61,6 +61,7 @@
         </div>
       </div>
       <div id="app" class="row columns is-multiline">
+        {% for beer in beersList %}
         <div class="column is-4">
           <div class="card large">
             <div class="card-image">
@@ -71,7 +72,7 @@
             <div class="card-content">
               <div class="media">
                 <div class="media-content">
-                  <p class="title is-4 no-padding">맥주명</p>
+                  <p class="title is-4 no-padding">{{ beer['name'] }}</p>
                 </div>
               </div>
               <div class="content">별점자리</div>
@@ -79,132 +80,7 @@
             </div>
           </div>
         </div>
-        <div class="column is-4">
-          <div class="card large">
-            <div class="card-image">
-              <figure class="image is-16by9">
-                <img src="" alt="맥주 이미지 " />
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-content">
-                  <p class="title is-4 no-padding">맥주명</p>
-                </div>
-              </div>
-              <div class="content">별점자리</div>
-              <div class="content">한줄평 자리</div>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card large">
-            <div class="card-image">
-              <figure class="image is-16by9">
-                <img src="" alt="맥주 이미지 " />
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-content">
-                  <p class="title is-4 no-padding">맥주명</p>
-                </div>
-              </div>
-              <div class="content">별점자리</div>
-              <div class="content">한줄평 자리</div>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card large">
-            <div class="card-image">
-              <figure class="image is-16by9">
-                <img src="" alt="맥주 이미지 " />
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-content">
-                  <p class="title is-4 no-padding">맥주명</p>
-                </div>
-              </div>
-              <div class="content">별점자리</div>
-              <div class="content">한줄평 자리</div>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card large">
-            <div class="card-image">
-              <figure class="image is-16by9">
-                <img src="" alt="맥주 이미지 " />
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-content">
-                  <p class="title is-4 no-padding">맥주명</p>
-                </div>
-              </div>
-              <div class="content">별점자리</div>
-              <div class="content">한줄평 자리</div>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card large">
-            <div class="card-image">
-              <figure class="image is-16by9">
-                <img src="" alt="맥주 이미지 " />
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-content">
-                  <p class="title is-4 no-padding">맥주명</p>
-                </div>
-              </div>
-              <div class="content">별점자리</div>
-              <div class="content">한줄평 자리</div>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card large">
-            <div class="card-image">
-              <figure class="image is-16by9">
-                <img src="" alt="맥주 이미지 " />
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-content">
-                  <p class="title is-4 no-padding">맥주명</p>
-                </div>
-              </div>
-              <div class="content">별점자리</div>
-              <div class="content">한줄평 자리</div>
-            </div>
-          </div>
-        </div>
-        <div class="column is-4">
-          <div class="card large">
-            <div class="card-image">
-              <figure class="image is-16by9">
-                <img src="" alt="맥주 이미지 " />
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-content">
-                  <p class="title is-4 no-padding">맥주명</p>
-                </div>
-              </div>
-              <div class="content">별점자리</div>
-              <div class="content">한줄평 자리</div>
-            </div>
-          </div>
-        </div>
+        {% endfor %}
       </div>
     </div>
   </body>
