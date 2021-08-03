@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from datetime import datetime
 from bson.objectid import ObjectId
 import jwt
+import bcrypt
 
 import xml.etree.ElementTree as elemTree
 
@@ -18,87 +19,79 @@ except:
 
 # print("** SECRET_KEY **", SECRET_KEY)
 # print("** MONGO_DB_URL **", MONGO_DB_URL)
+MONGO_DB_URL = "localhost"
 
 app = Flask(__name__)
 client = MongoClient(MONGO_DB_URL, 27017)
 db = client.beerdb
 
 
-###########################################################
+@app.route("/api/beer/get", methods=["GET"])
+def get_beer():
+   # params에서 맥주 아이디 체크
+   # 로그인이 되어 있는 경우, 평가 정보 join
+   # 다른 사람들의 평가 시간 순 정렬
+   beer = {}
+   return jsonify({"status": 200, "msg": "맥주 정보 불러오기 성공", "beer": beer})
+
+@app.route("/api/beer/list")
+def get_beer_list():
+   # 로그인되어 있는 경우, 각 맥주들에 대한 평가 정보 join
+   beers = db.beers.find({}).sort([("created_at", -1)])
+   return jsonify({"status": 200, "msg": "맥주 리스트 불러오기 성공", "beers": beers})
 
 
-# 회원가입 시엔, 비밀번호를 암호화하여 DB에 저장해두는 게 좋습니다.
-# 그렇지 않으면, 개발자(=나)가 회원들의 비밀번호를 볼 수 있으니까요.^^;
-import hashlib
-
-#################################
-##  HTML을 주는 부분             ##
-#################################
-@app.route('/')
-def home():
-   return render_template('index.html')
-
-@app.route('/login')
-def login():
-   return render_template('login.html')
-
-@app.route('/register')
-def register():
-   return render_template('register.html')
-
-#################################
-##  로그인을 위한 API            ##
-#################################
-
-@app.route('/api/register', methods=['POST'])
-def api_register():
-   userid_receive = request.form['userid_give']
-   pw_receive = request.form['pw_give']
-   nickname_receive = request.form['nickname_give']
-
-   pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
-
-   db.user.insert_one({'userid':userid_receive,'pw':pw_hash, 'nickname': nickname_receive })
-
-   return jsonify({'result': 'success'})
-
-# [로그인 API]
-# id, pw를 받아서 맞춰보고, 토큰을 만들어 발급
-@app.route('/api/login', methods=['POST'])
-def api_login():
-   userid_receive = request.form['userid_give']
-   pw_receive = request.form['pw_give']
-   
-   pw_hash = hashlib.sha256(pw_receive.encode('utf-8')).hexdigest()
-
-   result = db.user.find_one({'userid':userid_receive,'pw':pw_hash })
-
-   if result is not None:
-      payload = {
-         'userid': userid_receive,
-         'exp': datetime.datetime.utcnow() + datetime.timedelta(seconds=30) #만료시간
-      }
-      token = jwt.encode(payload, SECRET_KEY, algorithm='HS256') 
-      #str object는 decoding된 상태이므로, decoding할 필요 없음
-      # str --> bytes 로 encoding // bytes--> str로 decoding
-      return jsonify({'result': 'success', 'token' : token})
-
-   else:
-      return jsonify({'result': 'fail', 'msg':'아이디 또는 비밀번호가 일치하지 않습니다.'})
-
-# [유저 정보 확인 API]
-# 로그인된 유저만 call 할 수 있는 API.
-# 유효한 토큰을 줘야 올바른 결과를 얻어갈 수 있습니다.
-@app.route('/api/check', methods=['GET'])
-def api_check():
-   token_receive = request.headers['token_give']
-
+@app.route("/api/beer/add", methods=["POST"])
+def add_beer():
    try:
-      payload = jwt.decode(token_receive, SECRET_KEY, algorithms=['HS256'])
-      userinfo = db.user.find_one({'userid':payload['userid']},{'_id': False})
-      return jsonify({'result': 'success', 'nickname' : userinfo['nickname']}) 
-   except jwt.ExpiredSignatureError:
-      return jsonify({'result': 'fail', 'msg':'로그인 시간이 만료되었습니다.'})
+      # 데이터 확인하기
+      formdata = request.get_json()
+      formdata = request.form # temp
+      name = formdata.get("name")
+      abv = formdata.get("abv")
+      country = formdata.get("country")
+      manufacturer = formdata.get("manufacturer")
+      beertype = formdata.get("beertype")
+      if not name:
+         raise Exception("맥주 이름이 없습니다.")
+      if not abv:
+         raise Exception("맥주 도수가 없습니다.")
+      # 저장할 맥주 정보 구성하기
+      beer = {}
+      beer["name"] = name
+      beer["abv"] = abv
+      beer["country"] = country
+      beer["manufacturer"] = manufacturer
+      beer["beertype"] = beertype
+      # 저장하기
+      db.beers.insert_one(beer)
+      return jsonify({"status": 200, "msg": "맥주 정보 저장하기 성공"})
+   except Exception as e:
+      return jsonify({"status": 500, "msg": str(e)})
+
+
+@app.route("/api/user/register")
+def user_register():
+   try:
+      # 데이터 확인하기
+      formdata = request.get_json()
+      formdata = request.form # temp
+      username = formdata.get("username")
+      password = formdata.get("password")
+      if not username:
+         raise Exception("유저 이름이 없습니다.")
+      if not password:
+         raise Exception("유저 비밀번호가 없습니다.")
+      print("1111", username, password)
+      hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+      print("2222", username, hashed_password)
+      hashed_password = hashed_password.decode('utf-8')
+      print("3333", username, hashed_password)
+
+      return jsonify({"status": 200, "msg": "사용자 등록하기 성공"})
+   except Exception as e:
+      return jsonify({"status": 500, "msg": str(e)})
+
 
 
 if __name__ == '__main__':
