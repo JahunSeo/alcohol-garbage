@@ -1,6 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
-# from bson.objectid import ObjectId
+from bson.objectid import ObjectId
 
 import xml.etree.ElementTree as elemTree
 
@@ -24,11 +24,17 @@ db = client.beerdb
 
 @app.route("/")
 def main():
-    beers = db.beers.find({}, {"_id": False})
+    beers = db.beers.find({})
     beers = list(beers)
-    print(121212, beers)
+    for item in beers:
+        item["_id"] = str(item["_id"])
+
     return render_template("index.html", beersList=beers)
 
+@app.route("/beer/<id>")
+def show_beer(id):
+    beer = db.beers.find_one({"_id": ObjectId(id)})
+    return render_template("detail.html", beer=beer)
 
 #### #### #### #### ####
 #### #### API  #### ####
