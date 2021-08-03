@@ -1,3 +1,4 @@
+from routes import *
 from flask import Flask, render_template, redirect, url_for
 from pymongo import MongoClient
 from bson.objectid import ObjectId
@@ -39,15 +40,11 @@ def show_beer(id):
     except Exception as e:
         return redirect(url_for('main'))
 
+
 #### #### #### #### ####
 #### #### API  #### ####
 #### #### #### #### ####
-from routes import *
 app.register_blueprint(routes)
-
-
-
-
 
 
 if __name__ == '__main__':
