@@ -5,37 +5,36 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script
-    src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-    crossorigin="anonymous"
+      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+      crossorigin="anonymous"
     ></script>
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
-    <!-- <link rel="stylesheet" href="../css/cards.css" /> -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
     <title>알쓰극복일기</title>
-
     <style type="text/css">
-    .base-section {
+      .base-section {
         position: relative;
         z-index: 1;
-    }
+      }
 
-    .login-section {
+      .login-section {
         position: relative;
         display: none;
         z-index: 3;
-    }
+      }
 
-    .signUp-section {
+      .signUp-section {
         position: relative;
         display: none;
         z-index: 3;
-    }
+      }
 
-    #login-overlay {
+      #login-overlay {
         position: fixed;
         display: block;
         width: 100%;
@@ -44,12 +43,13 @@
         left: 0;
         right: 0;
         bottom: 0;
-        background-color: rgba(0,0,0,0.5);
+        background-color: rgba(0, 0, 0, 0.5);
         cursor: pointer;
-    }
+      }
 
-    #login-popup {
+      #login-popup {
         position: fixed;
+        display: inline;
         left: 30%;
         right: 30%;
         width: 430px;
@@ -74,7 +74,7 @@
       cursor: pointer;
     }
 
-    #signUp-popup {
+      #signUp-popup {
         position: fixed;
         left: 30%;
         right: 30%;
@@ -96,13 +96,13 @@
       width: 350px;
     }
 
-    .input {
+      .input {
         font-style: italic;
-    }
+      }
 
-    .submitField {
-      text-align: center;
-    }
+      .submitField {
+        text-align: center;
+      }
 
     .test-box {
         position: fixed;
@@ -139,10 +139,10 @@
             } else{
               alert(response['msg'])
             }
-          }
-        }); 
+          },
+        });
       }
-      
+
       function showSignUp() {
           $('#login-section').hide();
           $('#signUp-section').show();
@@ -168,10 +168,9 @@
             } else{
               alert(response['msg'])
             }
-          }
+          },
         });
       }
-        
     </script>
   </head>
   <body class="mainBody">
@@ -247,7 +246,11 @@
     </div>
 
     <div class="section" id="base-section">
-      <div class="headerBox"><button class="button is-success is-rounded" onclick="showLogin()">로그인</button></div>
+      <div class="headerBox">
+        <button class="button is-success is-rounded" onclick="showLogin()">
+          로그인
+        </button>
+      </div>
       <div class="titleBox">
         <div class="column has-text-centered">
           <h1 class="title mainTitle">알쓰 극복 일기</h1>
@@ -300,7 +303,9 @@
           <div class="card large">
             <div class="card-image">
               <figure class="image is-16by9">
-                <img src="" alt="맥주 이미지 " />
+                <a href="/beer/{{ beer['_id']}}">                
+                  <img src="" alt="맥주 이미지 " data-id="{{ beer['_id']}}" />
+                </a>
               </figure>
             </div>
             <div class="card-content">
@@ -316,8 +321,6 @@
         </div>
         {% endfor %}
       </div>
-
-
- 
+    </div>
   </body>
 </html>
