@@ -1,9 +1,6 @@
 from flask import Flask, render_template, jsonify, request
 from pymongo import MongoClient
-import datetime
-from bson.objectid import ObjectId
-import jwt
-import bcrypt
+# from bson.objectid import ObjectId
 
 import xml.etree.ElementTree as elemTree
 
@@ -33,113 +30,15 @@ def main():
     return render_template("index.html", beersList=beers)
 
 
-
-@app.route("/api/beer/get", methods=["GET"])
-def get_beer():
-    # params에서 맥주 아이디 체크
-    # 로그인이 되어 있는 경우, 평가 정보 join
-    # 다른 사람들의 평가 시간 순 정렬
-    beer = {}
-    return jsonify({"status": 200, "msg": "맥주 정보 불러오기 성공", "beer": beer})
+#### #### #### #### ####
+#### #### API  #### ####
+#### #### #### #### ####
+from routes import *
+app.register_blueprint(routes)
 
 
 
-@app.route("/api/beer/list")
-def get_beer_list():
-    # 로그인되어 있는 경우, 각 맥주들에 대한 평가 정보 join
-    beers = db.beers.find({}).sort([("created_at", -1)])
-    return jsonify({"status": 200, "msg": "맥주 리스트 불러오기 성공", "beers": beers})
 
-
-@app.route("/api/beer/add", methods=["POST"])
-def add_beer():
-    try:
-        # 데이터 확인하기
-        formdata = request.get_json()
-        formdata = request.form  # temp
-        name = formdata.get("name")
-        abv = formdata.get("abv")
-        country = formdata.get("country")
-        manufacturer = formdata.get("manufacturer")
-        beertype = formdata.get("beertype")
-        if not name:
-            raise Exception("맥주 이름이 없습니다.")
-        if not abv:
-            raise Exception("맥주 도수가 없습니다.")
-        # 저장할 맥주 정보 구성하기
-        beer = {}
-        beer["name"] = name
-        beer["abv"] = abv
-        beer["country"] = country
-        beer["manufacturer"] = manufacturer
-        beer["beertype"] = beertype
-        # 저장하기
-        db.beers.insert_one(beer)
-        return jsonify({"status": 200, "msg": "맥주 정보 저장하기 성공"})
-    except Exception as e:
-        return jsonify({"status": 500, "msg": str(e)})
-
-
-@app.route("/api/user/register")
-def user_register():
-   try:
-      # 데이터 확인하기
-      formdata = request.get_json()
-      formdata = request.form # temp
-      username = formdata.get("username")
-      password = formdata.get("password")
-      if not username:
-         raise Exception("유저 이름이 없습니다.")
-      if not password:
-         raise Exception("유저 비밀번호가 없습니다.")
-      # 비밀번호 암호화하기
-      hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-      hashed_password = hashed_password.decode('utf-8')
-      # 이미 동일한 username이 있는지 확인
-      prev = db.users.find_one({"username": username})
-      if prev:
-         raise Exception("이미 동일한 이름의 유저가 있습니다.")
-      # 저장할 정보 구성하기
-      user = {}
-      user["username"] = username
-      user["password"] = hashed_password
-      # 저장하기
-      db.users.insert_one(user)
-      return jsonify({"status": 200, "msg": "사용자 등록하기 성공"})
-   except Exception as e:
-      return jsonify({"status": 500, "msg": str(e)})
-
-
-@app.route("/api/user/login")
-def user_login():
-   try:
-      # 데이터 확인하기
-      formdata = request.get_json()
-      formdata = request.form # temp
-      username = formdata.get("username")
-      password = formdata.get("password")
-      if not username:
-         raise Exception("유저 이름이 없습니다.")
-      if not password:
-         raise Exception("유저 비밀번호가 없습니다.")
-      # 유저 찾기
-      user = db.users.find_one({"username": username})
-      if user is None:
-         raise Exception("잘못된 유저 이름입니다.")
-      # 비밀번호 체크하기
-      check_pw = bcrypt.checkpw(password.encode('utf-8'), user["password"].encode('utf-8'))
-      print(username, password, check_pw)
-      if not check_pw:
-         raise Exception("잘못된 비밀번호입니다.")
-      payload = {
-         "username": username,
-         "exp": datetime.datetime.utcnow() + datetime.timedelta(seconds=30)
-      }
-      token = jwt.encode(payload, SECRET_KEY, algorithm="HS256")
-      return jsonify({"status": 200, "msg": "사용자 로그인 성공", "token": token})
-
-   except Exception as e:
-      return jsonify({"status": 500, "msg": str(e)})
 
 
 if __name__ == '__main__':
