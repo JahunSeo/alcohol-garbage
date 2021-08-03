@@ -13,7 +13,7 @@
     />
 
     <style type="text/css">
-    #login-overlay {
+    #signUp-overlay {
         position: fixed;
         display: block;
         width: 100%;
@@ -26,16 +26,20 @@
         cursor: pointer;
     }
 
-    #login-popup {
+    #signUp-popup {
         position: fixed;
         left: 33%;
         right: 33%;
         width: 30%;
         height: auto;
         padding: 40px;
-        border: 2px solid;
-        background-color: rgba(0, 300, 0, 0.4);
+        background-color: rgb(128, 220, 133);
         margin: 5% auto;
+        border-radius: 20px;
+    }
+
+    #id-name {
+        font-size: larger;
     }
     
     .input {
@@ -69,37 +73,58 @@
   </head>
 
   <body>
-    <div id="login-overlay"></div>
-    <div class="login-wrap" id="login-popup">
-        <h1 class="title is-1">Login</h1>
-    <div class="id-field ">
-    <p class="control has-icons-left has-icons-right">
-        <input class="input" type="text" name="ID" placeholder="ID를 입력해주세요">
-        <span class="icon is-small is-left">
-        <i class="fas fa-envelope"></i>
-        </span>
-        <span class="icon is-small is-right">
-        <i class="fas fa-check"></i>
-        </span>
-    </p>
-    <br/>
+    <div id="signUp-overlay"></div>
+    <div class="signUp-wrap" id="signUp-popup">
+        <h1 class="title is-1">Sign Up</h1>
+    <div class="id-field">
+        <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label" id="id-name">ID : </label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+            <div class="control">
+                <input class="input" type="text" name="ID" placeholder="ID를 입력해주세요">
+            </div>
+            </div>
+        </div>
     </div>
+    </div>
+    <br/>
     <div class="pw-field">
-    <p class="control has-icons-left">
-        <input class="input" type="password" name="password" placeholder="패스워드를 입력해주세요">
-        <span class="icon is-small is-left">
-        <i class="fas fa-lock"></i>
-        </span>
-    </p>
+        <div class="field is-horizontal">
+        <div class="field-label is-normal">
+            <label class="label" id="id-name">PW : </label>
+        </div>
+        <div class="field-body">
+            <div class="field">
+            <div class="control">
+                <input class="input" type="password" name="password" placeholder="패스워드를 입력해주세요">
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <br/>
+    <div class="pw-check-field">
+    <div class="field is-horizontal">
+    <div class="field-label is-normal">
+        <label class="label" id="id-name">PW : </label>
+    </div>
+    <div class="field-body">
+        <div class="field">
+        <div class="control">
+            <input class="input" type="password" name="password" placeholder="패스워드를 다시 한번 입력해주세요">
+        </div>
+        </div>
+        </div>
+    </div>
     </div>
     <br/>
     <div class="submitField">
     <p class="control">
         <button class="button is-primary is-rounded">
-        Login
-        </button>
-        <button class="button is-success is-rounded">
-        Sing Up
+        Submit
         </button>
     </p>
     </div>
