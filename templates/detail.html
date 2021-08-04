@@ -1,4 +1,5 @@
 {% extends 'base.html'%} {% block content%}
+
 <div class="box detail-wrap">
   <section class="hero">
     <div class="hero-body beerInfo">
@@ -80,6 +81,13 @@
   <div class="myCommentsBox">
     <article class="media">
       <div class="media-content">
+        <!-- <button
+          class="deleteBtn button is-success"
+          type="submit"
+          onclick='deleteReview("{{ username[\`_id \`] }}")''
+        >
+          삭제
+        </button> -->
         <div class="content">
           <p>
             <strong>{{review['username']}}</strong>
@@ -115,8 +123,5 @@
   </div>
   {% endif %} {% endfor %}
 </div>
-<script>
-  const addComments = new AddComments();
-</script>
 
 {% endblock %}

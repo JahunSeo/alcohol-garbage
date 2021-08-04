@@ -52,3 +52,7 @@
 .beerImg {
   object-fit: contain;
 }
+
+.deleteBtn {
+  float: right;
+}
