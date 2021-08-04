@@ -1,5 +1,4 @@
 {% extends 'base.html'%} {% block content%}
-
 <div class="box detail-wrap">
   <section class="hero">
     <div class="hero-body beerInfo">
@@ -81,13 +80,14 @@
   <div class="myCommentsBox">
     <article class="media">
       <div class="media-content">
-        <!-- <button
+        <button
+          id="{{ review['_id'] }}"
           class="deleteBtn button is-success"
           type="submit"
-          onclick='deleteReview("{{ username[\`_id \`] }}")''
+          onclick={{"deleteReview('{}')".format(review['_id']) }}
         >
           삭제
-        </button> -->
+        </button>
         <div class="content">
           <p>
             <strong>{{review['username']}}</strong>

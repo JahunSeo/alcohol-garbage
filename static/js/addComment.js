@@ -26,21 +26,21 @@ function addReview() {
   });
 }
 
-// function deleteReview(id) {
-//   $.ajax({
-//     type: "POST",
-//     url: "/api/review/delete",
-//     data: {
-//       username: id,
-//     },
-//     success: function (response) {
-//       console.log(response);
-//       if (response["status"] == 200) {
-//         alert("리뷰 삭제가 완료 되었습니다");
-//         window.location.reload();
-//       } else {
-//         alert(response["msg"]);
-//       }
-//     },
-//   });
-// }
+function deleteReview(id) {
+  $.ajax({
+    type: "POST",
+    url: "/api/review/delete",
+    data: {
+      _id: id,
+    },
+    success: function (response) {
+      console.log(response);
+      if (response["status"] == 200) {
+        alert("리뷰 삭제가 완료 되었습니다");
+        window.location.reload();
+      } else {
+        alert(response["msg"]);
+      }
+    },
+  });
+}
