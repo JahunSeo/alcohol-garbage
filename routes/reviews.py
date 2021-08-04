@@ -26,7 +26,7 @@ def add_review():
         review = {}
         review["username"] = username
         review["beer_id"] = ObjectId(beer_id)
-        review["score"] = score
+        review["score"] = int(score)
         review["comment"] = comment
         review["created_at"] = datetime.datetime.utcnow()
         review["updated_at"] = datetime.datetime.utcnow()
