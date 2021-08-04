@@ -25,7 +25,7 @@ def add_review():
         # 저장할 리뷰 구성하기
         review = {}
         review["username"] = username
-        review["beer_id"] = beer_id
+        review["beer_id"] = ObjectId(beer_id)
         review["score"] = score
         review["comment"] = comment
         # 저장하기

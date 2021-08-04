@@ -71,17 +71,17 @@ def show_beer(_id):
     try:
         username = get_jwt_identity()
         beer = db.beers.find_one({"_id": ObjectId(_id)})
-        reviews = db.reviews.find({"beer_id": _id})
+        reviews = db.reviews.find({"beer_id": ObjectId(_id)})
         reviews = list(reviews)
         for review in reviews:
             review["_id"] = str(review["_id"])
-        print(username, beer, reviews)
+            review["beer_id"] = str(review["beer_id"])
         if username is None:
             return render_template("detail.html", beer=beer, reviews=reviews)
         else:
             return render_template("detail.html", beer=beer, reviews=reviews, username=username)
-
     except Exception as e:
+        print("[Error] Detail Page", e)
         return redirect(url_for('main'))
 
 
