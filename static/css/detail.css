@@ -13,6 +13,10 @@
   align-items: center;
   justify-content: center;
   height: 150px;
+  background-image: url("../img/beer.png");
+  background-size: 50%;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
 }
 
 .commentsBox {
