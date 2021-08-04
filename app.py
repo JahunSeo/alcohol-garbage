@@ -54,7 +54,7 @@ def main():
     # search query 확인하기
     search_text = request.args.get('text', "")
     search_abv = request.args.get('abv_lv')
-    search_sort = request.args.get("sort", -1)
+    search_sort = request.args.get("sort", 1)
     abv_obj = {
         "1": {"checked": False, "text": "2.0% ~ 3.9%", 'gte': 2, "lt": 4},
         "2": {"checked": False, "text": "4.0% ~ 5.9%", 'gte': 4, "lt": 6},
