@@ -3,6 +3,7 @@ from . import routes
 
 from app import db
 
+
 @routes.route("/api/beer/get", methods=["GET"])
 def get_beer():
     # params에서 맥주 아이디 체크
@@ -10,7 +11,6 @@ def get_beer():
     # 다른 사람들의 평가 시간 순 정렬
     beer = {}
     return jsonify({"status": 200, "msg": "맥주 정보 불러오기 성공", "beer": beer})
-
 
 
 @routes.route("/api/beer/list")
@@ -31,6 +31,7 @@ def add_beer():
         country = formdata.get("country")
         manufacturer = formdata.get("manufacturer")
         beertype = formdata.get("beertype")
+        image = formdata.get("image")
         if not name:
             raise Exception("맥주 이름이 없습니다.")
         if not abv:
@@ -42,6 +43,7 @@ def add_beer():
         beer["country"] = country
         beer["manufacturer"] = manufacturer
         beer["beertype"] = beertype
+        beer["image"] = image
         # 저장하기
         db.beers.insert_one(beer)
         return jsonify({"status": 200, "msg": "맥주 정보 저장하기 성공"})
