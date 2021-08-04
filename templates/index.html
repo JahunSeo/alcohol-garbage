@@ -1,19 +1,27 @@
 {% extends 'base.html' %} {% block content%}
 <section>
-  <div class="SearchAbv">
-    <label>알콜 도수</label>
-    <div>
+  <div class="SearchAbv" id="abv-box">
+    <button class="button is-success is-light" id="abv-title">ABV SELECT</button>
+
+    <!-- <label id="abv-title">알콜 도수</label> -->
+    <div class="abv-all-list">
       {% for abvkey, abv in abv_obj.items() %}
-      <div class="AbvCheckbox">
+      <!-- <div class="AbvCheckbox" id="abv-list">
         <input class="AbvCheckbox__input" type="checkbox" id="search-abv-{{
         abvkey }}" name="search-abv-{{abvkey}}" {% if abv['checked'] %} checked
         {% endif %} />
         <label class="AbvCheckbox__label" for="scales">{{ abv["text"] }}</label>
-      </div>
+      </div> -->
+      <label class="checkbox" id="abv-checkbox">
+        <input type="checkbox" id="search-abv-{{abvkey}}" name="search-abv-{{abvkey}}" {% if abv['checked'] %} checked {% endif %} />
+        {{ abv["text"] }}
+      </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
       {% endfor %}
-    </div>
+    </div><br/>
   </div>
 </section>
+
 <div id="beerFilter" class="field is-grouped">
   <p class="control is-expanded">
     <input
@@ -33,7 +41,8 @@
       검색
     </button>
   </p>
-</div>
+</div><br/><br/>
+
 <div id="app" class="row columns is-multiline">
   {% for beer in beersList %}
   <div class="column is-3">
