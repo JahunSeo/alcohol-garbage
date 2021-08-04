@@ -35,17 +35,36 @@
 .beerImg {
   object-fit: contain;
 }
-#abv-box {
-  padding: 20px;
+
+.search-section {
+  background-color: #eeeeee;
+  padding: 30px 20px;
 }
 
-#abv-checkbox {
-  float: right;
-  /* white-space : nowrap; */
-  font-size: x-large;
+.SearchAbv {
 }
 
-#abv-title {
+.abv-title {
   font-size: large;
-  float : left;
+  width: 150px;
+  height: 30px;
+  margin-bottom: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  background-color: #d8d8d8;
+  border-radius: 2px;
+  padding: 3px 5px;
+  text-align: center;
+}
+
+.abv-all-list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.abv-checkbox {
+  width: 150px;
+  height: 25px;
+  font-size: 18px;
 }

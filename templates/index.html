@@ -1,47 +1,42 @@
 {% extends 'base.html' %} {% block content%}
-<section>
+<section class="search-section">
   <div class="SearchAbv" id="abv-box">
-    <button class="button is-success is-light" id="abv-title">ABV SELECT</button>
-
     <!-- <label id="abv-title">알콜 도수</label> -->
+    <p class="abv-title">ABV SELECT</p>
     <div class="abv-all-list">
       {% for abvkey, abv in abv_obj.items() %}
-      <!-- <div class="AbvCheckbox" id="abv-list">
-        <input class="AbvCheckbox__input" type="checkbox" id="search-abv-{{
-        abvkey }}" name="search-abv-{{abvkey}}" {% if abv['checked'] %} checked
-        {% endif %} />
-        <label class="AbvCheckbox__label" for="scales">{{ abv["text"] }}</label>
-      </div> -->
-      <label class="checkbox" id="abv-checkbox">
-        <input type="checkbox" id="search-abv-{{abvkey}}" name="search-abv-{{abvkey}}" {% if abv['checked'] %} checked {% endif %} />
-        {{ abv["text"] }}
-      </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-
+      <label class="checkbox abv-checkbox">
+        <input type="checkbox" id="search-abv-{{abvkey}}"
+        name="search-abv-{{abvkey}}" {% if abv['checked'] %} checked {% endif %}
+        /> {{ abv["text"] }}
+      </label>
       {% endfor %}
-    </div><br/>
+    </div>
+    <br />
+  </div>
+  <div id="beerFilter" class="field is-grouped">
+    <p class="control is-expanded">
+      <input
+        class="input"
+        type="text"
+        placeholder="검색할 맥주의 이름을 입력해주세요."
+        id="search-text"
+        value="{{ search_text }}"
+      />
+    </p>
+    <p class="control">
+      <button
+        class="button is-info filter"
+        type="submit"
+        onclick="submitSearch()"
+      >
+        검색
+      </button>
+    </p>
   </div>
 </section>
 
-<div id="beerFilter" class="field is-grouped">
-  <p class="control is-expanded">
-    <input
-      class="input"
-      type="text"
-      placeholder="검색할 맥주의 이름을 입력해주세요."
-      id="search-text"
-      value="{{ search_text }}"
-    />
-  </p>
-  <p class="control">
-    <button
-      class="button is-info filter"
-      type="submit"
-      onclick="submitSearch()"
-    >
-      검색
-    </button>
-  </p>
-</div><br/><br/>
+<br /><br />
 
 <div id="app" class="row columns is-multiline">
   {% for beer in beersList %}
