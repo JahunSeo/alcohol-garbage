@@ -1,25 +1,3 @@
-// class AddComments {
-//   constructor() {
-//     this.$form = document.querySelector(".addComment");
-//     this.setEvents();
-//   }
-
-//   setEvents() {
-//     this.$form.addEventListener("submit", this.handleClickAdd);
-//   }
-
-//   handleClickAdd = (e) => {
-//     e.preventDefault();
-//     const formData = new FormData(this.$form);
-//     const data = Array.from(formData.entries()).reduce(
-//       (acc, [key, value]) => ({ ...acc, [key]: value }),
-//       {},
-//     );
-//   };
-// }
-// let comment = $(“#review-comment”).val();
-//   let score = $(“input[name=rating]:checked”).val();
-
 function addReview() {
   console.log({
     username: $("#commentUser").attr("data-id"),
@@ -40,6 +18,25 @@ function addReview() {
       console.log(response);
       if (response["status"] == 200) {
         alert("리뷰 업로드가 완료되었습니다.");
+        window.location.reload();
+      } else {
+        alert(response["msg"]);
+      }
+    },
+  });
+}
+
+function deleteReview(id) {
+  $.ajax({
+    type: "POST",
+    url: "/api/review/delete",
+    data: {
+      _id: id,
+    },
+    success: function (response) {
+      console.log(response);
+      if (response["status"] == 200) {
+        alert("리뷰 삭제가 완료 되었습니다");
         window.location.reload();
       } else {
         alert(response["msg"]);

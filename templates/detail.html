@@ -80,6 +80,14 @@
   <div class="myCommentsBox">
     <article class="media">
       <div class="media-content">
+        <button
+          id="{{ review['_id'] }}"
+          class="deleteBtn button is-success"
+          type="submit"
+          onclick={{"deleteReview('{}')".format(review['_id']) }}
+        >
+          삭제
+        </button>
         <div class="content">
           <p>
             <strong>{{review['username']}}</strong>
@@ -115,8 +123,5 @@
   </div>
   {% endif %} {% endfor %}
 </div>
-<script>
-  const addComments = new AddComments();
-</script>
 
 {% endblock %}
