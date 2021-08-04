@@ -141,6 +141,8 @@
 
       function closeLogin() {
         $('#login-section').hide();
+        $('#login-username-box').val("");
+        $('#login-password-box').val("");
       }
 
       function submitLogin() {
@@ -185,6 +187,9 @@
 
       function closeSignUp() {
         $('#signUp-section').hide();
+        $('#signUp-username-box').val("");
+        $('#signUp-password-box').val("");
+        $('#signUp-repassword-box').val("");
       }
 
 
@@ -215,24 +220,33 @@
       }
 
       function submitSignUp() {
-        let username = $('#signUp-username-box').val()
-        let password = $('#signUp-password-box').val()
+        let username = $('#signUp-username-box').val();
+        let password = $('#signUp-password-box').val();
+        let repassword = $('#signUp-repassword-box').val();
 
         if (isNameChecked == false) {
           alert("username 중복 여부를 확인해주세요");
           return;
-        } 
+        }
         
         if (ValidName != username) {
           alert("username 중복 여부를 확인해주세요");
           return;
         }
+
+        if(password != repassword) {
+          alert("password 일치 여부를 확인해주세요");
+          $('#signUp-password-box').val("");
+          $('#signUp-repassword-box').val("");
+          return;
+        }
+        
           $.ajax({
               type: "POST",
               url: "/api/user/register",
               data: {
                   username : username, 
-                  password : password, 
+                  password : password,
                   },
               success: function(response) {
                 if (response['status'] == 200) {
@@ -336,7 +350,7 @@
       </div>
       <div class="titleBox">
         <div class="column has-text-centered">
-          <h1 class="title mainTitle">알쓰 극복 일기</h1>
+          <h1><a class="title mainTitle" href="{{ url_for('main') }}">알쓰극복일기</a></h1>
         </div>
       </div>
       
