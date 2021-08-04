@@ -55,12 +55,11 @@
         </figure>
       </div>
       <div class="card-content">
-        <div class="media">
-          <div class="media-content">
-            <p class="title is-4 no-padding">{{ beer['name'] }}</p>
-            <p class="title is-4 no-padding">{{ beer['abv'] }}%</p>
-          </div>
-        </div>
+        <p class="beer-title">
+          {{ beer['name'] }}<span class="beer-title-abv"
+            >&nbsp; ({{ beer['abv'] }}%)</span
+          >
+        </p>
       </div>
     </div>
   </div>
