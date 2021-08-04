@@ -51,7 +51,13 @@
         </figure>
       </div>
       <div class="card-content">
-        <p class="beer-review">리뷰 {{beer['reviewCount']}}</p>
+        <div class="beer-info-row">
+          <p class="beer-review">리뷰 {{beer['reviewCount']}}</p>
+          {% if beer["reviewScore"] != -1 %}
+          <p class="beer-score">평점 {{beer['reviewScore']}}</p>
+          {% endif %}
+        </div>
+
         <p class="beer-title">
           {{ beer['name'] }}<span class="beer-title-abv"
             >&nbsp; ({{ beer['abv'] }}%)</span

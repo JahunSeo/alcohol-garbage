@@ -69,6 +69,14 @@
   font-size: 16px;
 }
 
+.beer-info-row {
+  display: flex;
+}
+
+.beer-info-row > p {
+  width: 50%;
+}
+
 .beer-title {
   font-size: 20px;
   font-weight: bold;

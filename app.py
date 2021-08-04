@@ -86,8 +86,11 @@ def main():
     for beer in beers:
         beer["_id"] = str(beer["_id"])
         beer["reviewCount"] = len(beer["reviews"])
+        beer["reviewScore"] = -1
         if len(beer["reviews"]) > 0:
-             beer["reviews"] = sorted(beer["reviews"], reverse=True, key=lambda review: review.get("created_at"))
+            beer["reviews"] = sorted(beer["reviews"], reverse=True, key=lambda review: review.get("created_at"))
+            beer["reviewScore"] = sum(review["score"] for review in beer["reviews"]) / len(beer["reviews"])
+            beer["reviewScore"] = round(beer["reviewScore"], 1)
 
     if username is None:
         return render_template("index.html", beersList=beers, search_text=search_text, abv_obj=abv_obj)
