@@ -75,12 +75,11 @@ def show_beer(_id):
         reviews = list(reviews)
         for review in reviews:
             review["_id"] = str(review["_id"])
-        print(beer, reviews)
+            review["beer_id"] = str(review["beer_id"])
         if username is None:
             return render_template("detail.html", beer=beer, reviews=reviews )
         else:
             return render_template("detail.html", beer=beer, reviews=reviews, username=username)
-
     except Exception as e:
         return redirect(url_for('main'))
 
