@@ -18,7 +18,8 @@
 }
 
 .headerBox {
-  float: right;
+  display: flex;
+  justify-content: flex-end;
   padding: auto;
   margin: 0;
 }
