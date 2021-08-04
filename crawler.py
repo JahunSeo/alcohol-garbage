@@ -6,7 +6,7 @@ import xml.etree.ElementTree as elemTree
 
 tree = elemTree.parse("keys.xml")
 MONGO_DB_URL = tree.find('string[@name="MONGO_DB_URL"]').text
-MONGO_DB_URL = "localhost"
+# MONGO_DB_URL = "localhost"
 
 client = MongoClient(MONGO_DB_URL, 27017)
 db = client.beerdb
@@ -24,6 +24,10 @@ print(len(rows))
 for row in rows:
     beer = {}
     atag = row.select_one("td:nth-child(1) > a")
+    names = atag.text.split("/")
+    beer["original_name"] = names[0].strip()
+    beer["name"] = names[1].strip()
+
     # 링크
     beer["url"] = atag["href"]
     print(beer["url"])
@@ -33,32 +37,12 @@ for row in rows:
     table = table.select_one("table table")
 
     abv = table.select_one("tr:nth-child(2) > td > span").text
-    beer["abv"] = abv
-
+    beer["abv"] = float(abv.split("%")[0])
+    manufacturer = table.select_one("tr:nth-child(3) > td > span").text
+    beer["manufacturer"] = manufacturer.replace("\xa0", "")
+    country = table.select_one("tr:nth-child(4) > td > span").text
+    beer["country"] = country.replace("\xa0", "")
+    image = subsoup.select_one("table img")
+    beer["image"] = image["src"]
     print(beer)
-    break
-
-    # # 이름
-    # names = atag.text
-    # names = names.split("/")
-    # beer["original_name"] = names[0].strip()
-    # beer["name"] = names[1].strip()
-    # # 국가
-    # beer["country"] = row.select_one("td:nth-child(3)").text
-    # print(beer)
-    break
-
-
-    beer = {}
-    beer["name"] = atag.text
-    beer["suburl"] = atag["href"]
-    beer["manufacturer"] = row.select_one("td:nth-child(2) > span > a:nth-child(2)").text
-    abv = row.select_one("td:nth-child(4)").text.replace("%", "")
-
-    print(row.select_one("td:nth-child(2) > span").text)
-    beer["abv"] = float(abv)
-    print(beer)
-
-    break
-
-    # db.beers.insert_one(beer)
+    db.beers.insert_one(beer)
