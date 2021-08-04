@@ -51,10 +51,10 @@ app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
 @jwt_required(optional=True)
 def main():
     username = get_jwt_identity()
+    # search query 확인하기
     search_text = request.args.get('text')
     search_abv = request.args.get('abv_lv')
-
-    print(1212, search_text, search_abv)
+    # $match 구성
     match_info = {}
     if search_text is not None:
         match_info["name"] = { "$regex": search_text }
@@ -73,26 +73,22 @@ def main():
                 match_info["$or"].append({"abv": { "$gte": 6, "$lt": 8 }})
             if abv == 5:
                 match_info["$or"].append({"abv": { "$gte": 8, "$lt": 10 }})
-
-    print(match_info)
     # TODO: aggregate로 review sorting하기
     beers = db.beers.aggregate([
                 {"$match": match_info},
                 {"$lookup": {"from": "reviews", "localField": "_id", "foreignField": "beer_id", "as": "reviews"}},
             ])
     beers = list(beers)
+    # beer에 reviewCount 추가 등 조작
     for beer in beers:
         beer["_id"] = str(beer["_id"])
         beer["reviews"] = sorted(beer["reviews"], reverse=True, key=lambda beer: beer["created_at"])
         beer["reviewCount"] = len(beer["reviews"])
 
-    # print(121212, beers[0])
-
     if username is None:
         return render_template("index.html", beersList=beers)
     else:
         return render_template("index.html", beersList=beers, username=username)
-
 
 @app.route("/beer/<_id>")
 @jwt_required(optional=True)
