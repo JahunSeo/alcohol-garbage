@@ -1,5 +1,5 @@
 {% extends 'base.html' %} {% block content%}
-<div>
+<div class="detail-wrap">
   <section class="hero">
     <div class="hero-body beerInfo">
       <div class="container has-text-centered">
@@ -39,7 +39,8 @@
       <nav class="level">
         <div class="level-left">
           <div class="level-item">
-            <a class="button is-info">추가</a>
+            <button class="button is-primary" onclick="uploadReview()">Upload</button>
+
           </div>
         </div>
       </nav>
