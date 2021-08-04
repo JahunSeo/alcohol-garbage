@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content%}
-      <div class="field is-grouped">
+      <div id="beerFilter" class="field is-grouped">
         <p class="control is-expanded">
           <input
             class="input"
@@ -10,7 +10,7 @@
           />
         </p>
         <p class="control">
-          <a class="button is-info"> 검색 </a>
+          <a class="button is-info filter"> 검색 </a>
         </p>
       </div>
       <div>
@@ -44,12 +44,13 @@
       </div>
       <div id="app" class="row columns is-multiline">
         {% for beer in beersList %}
-        <div class="column is-4">
-          <div class="card large">
+
+        <div class="column is-3">
+          <div class="card large beerCard">
             <div class="card-image">
-              <figure class="image is-16by9">
+              <figure class="image is-16by9 beerImage">
                 <a href="/beer/{{ beer['_id']}}">                
-                  <img src="" alt="맥주 이미지 " data-id="{{ beer['_id']}}" />
+                  <img src="{{ beer['image'] }}" alt="맥주 이미지 " data-id="{{ beer['_id']}}" />
                 </a>
               </figure>
             </div>
@@ -64,6 +65,7 @@
             </div>
           </div>
         </div>
+        
         {% endfor %}
       </div>
     </div>
