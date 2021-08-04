@@ -10,18 +10,18 @@ from app import db
 def user_login():
    try:
       # 데이터 확인하기
-      formdata = request.get_json()
-      formdata = request.form # temp
+      # formdata = request.get_json()
+      formdata = request.form
       username = formdata.get("username")
       password = formdata.get("password")
       if not username:
-         raise Exception("유저 이름이 없습니다.")
+         raise Exception("사용자 이름이 없습니다.")
       if not password:
-         raise Exception("유저 비밀번호가 없습니다.")
-      # 유저 찾기
+         raise Exception("사용자 비밀번호가 없습니다.")
+      # 사용자 찾기
       user = db.users.find_one({"username": username})
       if user is None:
-         raise Exception("잘못된 유저 이름입니다.")
+         raise Exception("잘못된 사용자 이름입니다.")
       # 비밀번호 체크하기
       check_pw = bcrypt.checkpw(password.encode('utf-8'), user["password"].encode('utf-8'))
       print(username, password, check_pw)
@@ -44,21 +44,21 @@ def user_login():
 def user_register():
    try:
       # 데이터 확인하기
-      formdata = request.get_json()
-      formdata = request.form # temp
+      # formdata = request.get_json()
+      formdata = request.form
       username = formdata.get("username")
       password = formdata.get("password")
       if not username:
-         raise Exception("유저 이름이 없습니다.")
+         raise Exception("사용자 이름이 없습니다.")
       if not password:
-         raise Exception("유저 비밀번호가 없습니다.")
+         raise Exception("사용자 비밀번호가 없습니다.")
       # 비밀번호 암호화하기
       hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
       hashed_password = hashed_password.decode('utf-8')
       # 이미 동일한 username이 있는지 확인
       prev = db.users.find_one({"username": username})
       if prev:
-         raise Exception("이미 동일한 이름의 유저가 있습니다.")
+         raise Exception("이미 동일한 이름의 사용자가 있습니다.")
       # 저장할 정보 구성하기
       user = {}
       user["username"] = username
@@ -66,6 +66,33 @@ def user_register():
       # 저장하기
       db.users.insert_one(user)
       return jsonify({"status": 200, "msg": "사용자 등록하기 성공"})
+   except Exception as e:
+      return jsonify({"status": 500, "msg": str(e)})
+
+
+@routes.route("/api/user/logout", methods=["GET"])
+def user_logout():
+   try:
+      resp = jsonify({"status": 200, "msg": "사용자 로그아웃 성공"})
+      unset_jwt_cookies(resp)
+      return resp
+   except Exception as e:
+      return jsonify({"status": 500, "msg": str(e)})
+
+
+@routes.route("/api/user/namecheck", methods=["POST"])
+def user_namecheck():
+   try:
+      # 데이터 확인하기
+      formdata = request.form
+      username = formdata.get("username")
+      if not username:
+         raise Exception("사용자 이름이 없습니다.")
+      # 이미 동일한 username이 있는지 확인
+      prev = db.users.find_one({"username": username})
+      if prev:
+         raise Exception("이미 동일한 이름의 사용자가 있습니다.")
+      return jsonify({"status": 200, "msg": "사용 가능한 이름입니다."})
    except Exception as e:
       return jsonify({"status": 500, "msg": str(e)})
 

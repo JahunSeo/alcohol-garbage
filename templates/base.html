@@ -149,8 +149,20 @@
         });
       }
 
-      function showLogout() {
-        window.location.href='/'
+      function submitLogout() {
+        $.ajax({
+          type: "GET",
+          url: "/api/user/logout",
+          data: {},
+          success: function(response) {
+            if (response["status"] == 200) {
+              alert("로그아웃이 완료되었습니다.")
+              window.location.href = "/"
+            } else {
+              alert(response["msg"])
+            }
+          }
+        })
       }
 
       function showSignUp() {
@@ -228,6 +240,7 @@
           <div class="control">
             <input class="input" type="text" id="signUp-username-box" placeholder="Username을 입력해주세요">
           </div>
+          <button class="button is-primary is-rounded" onclick="checkUsername()">이름 중복 체크</button>
         </div>
         <br/>
         <div class="pw-field">
@@ -260,7 +273,7 @@
         {% if username %}
         <div class="login-user-message">{{ username }}님 안녕하세요 :)</div>
         <br/>
-        <button class="button is-success is-rounded" onclick="showLogout()">로그아웃</button>
+        <button class="button is-success is-rounded" onclick="submitLogout()">로그아웃</button>
         {% else %}
         <button class="button is-success is-rounded" onclick="showLogin()">로그인</button>
         {% endif %}
