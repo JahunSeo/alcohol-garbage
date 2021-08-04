@@ -83,8 +83,9 @@ def main():
     # beer에 reviewCount 추가 등 조작
     for beer in beers:
         beer["_id"] = str(beer["_id"])
-        beer["reviews"] = sorted(beer["reviews"], reverse=True, key=lambda beer: beer["created_at"])
         beer["reviewCount"] = len(beer["reviews"])
+        if len(beer["reviews"]) > 0:
+             beer["reviews"] = sorted(beer["reviews"], reverse=True, key=lambda review: review.get("created_at"))
 
     if username is None:
         return render_template("index.html", beersList=beers, search_text=search_text, abv_obj=abv_obj)
