@@ -69,6 +69,16 @@ def user_register():
    except Exception as e:
       return jsonify({"status": 500, "msg": str(e)})
 
+
+@routes.route("/api/user/logout", methods=["POST"])
+def user_logout():
+   try:
+      resp = jsonify({"status": 200, "msg": "사용자 로그아웃 성공"})
+      unset_jwt_cookies(resp)
+      return resp
+   except Exception as e:
+      return jsonify({"status": 500, "msg": str(e)})
+
 # @routes.route("/api/user/check", methods=["GET"])
 # def user_check():
 #     try:
