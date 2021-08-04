@@ -18,7 +18,8 @@
 }
 
 .headerBox {
-  float: right;
+  display: flex;
+  justify-content: flex-end;
   padding: auto;
   margin: 0;
 }
@@ -39,7 +40,6 @@
   background-color: #eeeeee;
   padding: 30px 20px;
 }
-
 
 .abv-title {
   font-size: large;
@@ -80,7 +80,6 @@
   position: center;
   width: 950px;
 }
-
 
 .detail-beer-manufacturer {
   font-style: italic;
