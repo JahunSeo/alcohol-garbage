@@ -40,7 +40,6 @@
   padding: 30px 20px;
 }
 
-
 .abv-title {
   font-size: large;
   width: 150px;
@@ -66,10 +65,14 @@
   font-size: 18px;
 }
 
+.beer-review {
+  font-size: 16px;
+}
+
 .beer-title {
   font-size: 20px;
   font-weight: bold;
-  margin-top: 15px;
+  margin-top: 5px;
 }
 
 .beer-title-abv {
@@ -80,7 +83,6 @@
   position: center;
   width: 950px;
 }
-
 
 .detail-beer-manufacturer {
   font-style: italic;
