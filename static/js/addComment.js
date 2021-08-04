@@ -21,8 +21,7 @@
 function submitComment() {
   console.log("submit comment!");
   let comment = $("#review-comment").val();
-  console.log(comment);
-  let data = {};
+  let score = $("input[name=rating]:checked").val();
 }
 
 function submitSignUp() {
