@@ -77,10 +77,10 @@
         <div class="content">
           <p>
             <strong>{{review['username']}}</strong>
-            {% for i in range(review['score']) %}
-              <p>i</p>  
-            {% endfor %}
-            <label>{{ review['score'] }}</label>
+            <label
+              >{% for i in range(review['score']) %}
+              <i class="fas fa-star"></i>{% endfor %}</label
+            >
             <br />
             {{ review['comment'] }}
           </p>
@@ -96,7 +96,10 @@
           <p>
             <strong>{{ review['username']}}</strong>
 
-            <label>{{ review['score']}}</label>
+            <label
+              >{% for i in range(review['score']) %}
+              <i class="fas fa-star"></i>{% endfor %}</label
+            >
             <br />
             {{ review['comment']}}
           </p>
