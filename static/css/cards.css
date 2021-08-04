@@ -10,7 +10,6 @@
   align-items: center;
   justify-content: center;
   height: 150px;
-  /* background-image: url(static/img/beer_background.jpg); */
 }
 
 .mainTitle {
@@ -41,8 +40,6 @@
   padding: 30px 20px;
 }
 
-.SearchAbv {
-}
 
 .abv-title {
   font-size: large;
@@ -77,4 +74,15 @@
 
 .beer-title-abv {
   color: tomato;
+}
+
+.detail-wrap {
+  position: center;
+  width: 950px;
+}
+
+
+.detail-beer-manufacturer {
+  font-style: italic;
+  font-weight: lighter;
 }
