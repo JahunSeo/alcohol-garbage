@@ -36,7 +36,7 @@
 </div>
 <div id="app" class="row columns is-multiline">
   {% for beer in beersList %}
-  <div class="column is-3">
+  <div class="column is-4">
     <div class="card large beerCard">
       <div class="card-image">
         <figure class="image is-16by9 beerImage">
@@ -54,6 +54,7 @@
         <div class="media">
           <div class="media-content">
             <p class="title is-4 no-padding">{{ beer['name'] }}</p>
+            <p class="title is-4 no-padding">{{ beer['abv'] }}%</p>
           </div>
         </div>
       </div>
