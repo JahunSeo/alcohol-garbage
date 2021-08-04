@@ -17,3 +17,30 @@
 //     );
 //   };
 // }
+
+function submitComment() {
+  console.log("submit comment!");
+  let comment = $("#review-comment").val();
+  console.log(comment);
+  let data = {};
+}
+
+function submitSignUp() {
+  $.ajax({
+    type: "POST",
+    url: "/api/user/register",
+    data: {
+      username: $("#signUp-username-box").val(),
+      password: $("#signUp-password-box").val(),
+    },
+    success: function (response) {
+      console.log(response);
+      if (response["status"] == 200) {
+        alert("회원가입이 완료되었습니다.");
+        window.location.href = "/";
+      } else {
+        alert(response["msg"]);
+      }
+    },
+  });
+}

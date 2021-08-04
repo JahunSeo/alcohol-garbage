@@ -22,7 +22,7 @@
   </section>
 </div>
 <div>
-  <form class="addComment">
+  <div class="addComment">
     <article class="media">
       <div class="media-content">
         <div class="field">
@@ -40,6 +40,7 @@
           </div>
           <p class="control">
             <textarea
+              id="review-comment"
               name="comment"
               class="textarea commentArea"
               placeholder="한줄평을 입력해 주세요"
@@ -49,13 +50,19 @@
         <nav class="level">
           <div class="level-left">
             <div class="level-item">
-              <button class="button is-info" type="submit">추가</button>
+              <button
+                class="button is-info"
+                type="submit"
+                onclick="submitComment()"
+              >
+                추가
+              </button>
             </div>
           </div>
         </nav>
       </div>
     </article>
-  </form>
+  </div>
 </div>
 <div class="commentsBox">
   {% for review in reviews %} {% if review['username'] == username %}
