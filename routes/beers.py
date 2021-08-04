@@ -1,8 +1,7 @@
 from flask import jsonify, request
 from . import routes
 
-import datetime
-from app import db, SECRET_KEY
+from app import db
 
 @routes.route("/api/beer/get", methods=["GET"])
 def get_beer():
@@ -25,8 +24,8 @@ def get_beer_list():
 def add_beer():
     try:
         # 데이터 확인하기
-        formdata = request.get_json()
-        formdata = request.form  # temp
+        # formdata = request.get_json()
+        formdata = request.form
         name = formdata.get("name")
         abv = formdata.get("abv")
         country = formdata.get("country")
