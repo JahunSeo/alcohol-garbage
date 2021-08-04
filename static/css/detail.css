@@ -42,3 +42,7 @@
   justify-content: space-around;
   flex-wrap: wrap;
 }
+
+.beerImg {
+  object-fit: contain;
+}
