@@ -75,9 +75,9 @@ def show_beer(_id):
         reviews = list(reviews)
         for review in reviews:
             review["_id"] = str(review["_id"])
-        print(beer, reviews)
+        print(username, beer, reviews)
         if username is None:
-            return render_template("detail.html", beer=beer, reviews=reviews )
+            return render_template("detail.html", beer=beer, reviews=reviews)
         else:
             return render_template("detail.html", beer=beer, reviews=reviews, username=username)
 
