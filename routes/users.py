@@ -59,6 +59,7 @@ def user_register():
       prev = db.users.find_one({"username": username})
       if prev:
          raise Exception("이미 동일한 이름의 사용자가 있습니다.")
+
       # 저장할 정보 구성하기
       user = {}
       user["username"] = username

@@ -99,13 +99,13 @@
       width: 350px;
     }
 
-      .input {
-        font-style: italic;
-      }
+    .input {
+      font-style: italic;
+    }
 
-      .submitField {
-        text-align: center;
-      }
+    .submitField {
+      text-align: center;
+    }
 
     .test-box {
         position: fixed;
@@ -119,9 +119,20 @@
       font-weight: bold;
     }
 
+    #check-button {
+      float: right;
+    }
+
+    #signup-label-username {
+      float: left;
+    }
     </style>
 
      <script>
+
+      let isNameChecked = false
+      let ValidName = []
+
       function showLogin() {
         $('#login-section').show();
       }
@@ -174,25 +185,66 @@
         $('#signUp-section').hide();
       }
 
-      function submitSignUp() {
-        $.ajax({
-          type: "POST",
-          url: "/api/user/register",
-          data: { 
-              username : $('#signUp-username-box').val(), 
-              password : $('#signUp-password-box').val(), 
-              },
-          success: function(response) {
-            console.log(response)
-            if (response['status'] == 200) {
-              alert('회원가입이 완료되었습니다.')
-              window.location.href='/'
-            } else{
-              alert(response['msg'])
+
+      function checkUsername() {
+
+        let checkUserNameBox = $('#signUp-username-box').val();
+
+        if (checkUserNameBox == '') {
+          alert('username을 입력해주세요!');
+        } else {
+          $.ajax({
+            type: "POST",
+            url: "/api/user/namecheck",
+            data: { 
+                username : checkUserNameBox, 
+                },
+            success: function(response) {
+              if (response['status'] == 200) {
+                alert('사용가능한 Username입니다.');
+                isNameChecked = true
+                ValidName = checkUserNameBox;
+              } else {
+                alert('이미 동일한 Username이 있습니다.');
+              }
             }
-          },
-        });
+          })
+        }
       }
+
+      function submitSignUp() {
+        let username = $('#signUp-username-box').val()
+        let password = $('#signUp-password-box').val()
+
+        if (isNameChecked == false) {
+          alert("username 중복 여부를 확인해주세요");
+          return;
+        } 
+        
+        if (ValidName != username) {
+          alert("username 중복 여부를 확인해주세요");
+          return;
+        }
+          $.ajax({
+              type: "POST",
+              url: "/api/user/register",
+              data: {
+                  username : username, 
+                  password : password, 
+                  },
+              success: function(response) {
+                if (response['status'] == 200) {
+                  alert('회원가입이 완료되었습니다.')
+                  window.location.href='/'
+                } else{
+                  alert(response['msg'])
+                }
+              },
+            });
+        }
+
+        
+
     </script>
   </head>
   <body class="mainBody">
@@ -237,10 +289,10 @@
         <h1 class="title is-1">Sign Up</h1>
     <div class="username-field">
           <label class="label" id="signup-label-username">Username</label>
+          <input type="button" value="중복확인" class="button is-text" id="check-button" onclick="checkUsername()">
           <div class="control">
-            <input class="input" type="text" id="signUp-username-box" placeholder="Username을 입력해주세요">
+            <input class="input" type="text" id="signUp-username-box" placeholder="Username을 입력해주세요">       
           </div>
-          <button class="button is-primary is-rounded" onclick="checkUsername()">이름 중복 체크</button>
         </div>
         <br/>
         <div class="pw-field">
