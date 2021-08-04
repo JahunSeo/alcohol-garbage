@@ -18,6 +18,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/detail.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/beer_detail.css') }}">
     <link rel="shortcut icon" type="image/x-icon" href="https://image.flaticon.com/icons/png/512/571/571530.png">
+    <script src="{{ url_for('static', filename='js/addComment.js') }}"></script>
     <title>알쓰극복일기</title>
     <style type="text/css">
       .base-section {
@@ -194,6 +195,9 @@
         });
       }
     </script>
+    <script>
+      const addComment = new AddComment();
+    </script>
   </head>
   <body class="mainBody">
   <div class="login-section" id="login-section">
@@ -288,5 +292,7 @@
       {% block content %}
       
       {% endblock %}
+
+      
   </body>
 </html>

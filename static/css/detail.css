@@ -5,6 +5,9 @@
 .mainBody {
   padding: 0 5rem 0 5rem;
 }
+.beerInfo {
+  padding: 20px;
+}
 .titleBox {
   display: flex;
   align-items: center;
@@ -17,21 +20,20 @@
   margin: 1rem;
   padding: 1rem;
   border-radius: 20px;
-  flex-basis: 40%;
-  width: 50%;
+  width: 400px;
+  box-sizing: border-box;
+  float: left;
+  background-color: red;
 }
 
 .otherCommentsBox {
   border: solid 1px;
+  box-sizing: border-box;
   margin: 1rem;
   padding: 1rem;
   border-radius: 20px;
-  flex-basis: 40%;
-  width: 50%;
-}
-
-.beerInfo {
-  padding: 20px;
+  width: 400px;
+  float: right;
 }
 
 .commentsBox {

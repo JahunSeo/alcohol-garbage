@@ -22,26 +22,28 @@
   </section>
 </div>
 <div>
-  <article class="media">
-    <div class="media-content">
-      <div class="field">
-        <p>별점 구간</p>
-        <p class="control">
-          <textarea
-            class="textarea"
-            placeholder="한줄평을 입력해 주세요"
-          ></textarea>
-        </p>
-      </div>
-      <nav class="level">
-        <div class="level-left">
-          <div class="level-item">
-            <button class="button is-info">추가</button>
-          </div>
+  <form class="addComment">
+    <article class="media">
+      <div class="media-content">
+        <div class="field">
+          <p>별점 구간</p>
+          <p class="control">
+            <textarea
+              class="textarea commentArea"
+              placeholder="한줄평을 입력해 주세요"
+            ></textarea>
+          </p>
         </div>
-      </nav>
-    </div>
-  </article>
+        <nav class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <button class="button is-info" type="submit">추가</button>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </article>
+  </form>
 </div>
 <div class="commentsBox">
   {% for review in reviews %} {% if review['username'] == username %}
@@ -50,7 +52,7 @@
       <div class="media-content">
         <div class="content">
           <p>
-            <strong>{{review['name']}}</strong>
+            <strong>{{review['username']}}</strong>
             <label>{{ review['score'] }}</label>
             <br />
             {{ review['comment'] }}
@@ -65,7 +67,7 @@
       <div class="media-content">
         <div class="content">
           <p>
-            <strong>{{ review['name']}}</strong>
+            <strong>{{ review['username']}}</strong>
             <label>{{ review['score']}}</label>
             <br />
             {{ review['comment'] }}
@@ -73,8 +75,8 @@
         </div>
       </div>
     </article>
-    {% endif %} {% endfor %}
   </div>
+  {% endif %} {% endfor %}
 </div>
 
 {% endblock %}
