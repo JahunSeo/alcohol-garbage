@@ -11,13 +11,30 @@
   justify-content: center;
   height: 150px;
 }
-.commentsBox {
+
+.myCommentsBox {
   border: solid 1px;
   margin: 1rem;
   padding: 1rem;
   border-radius: 20px;
+  flex-basis: 40%;
+}
+
+.otherCommentsBox {
+  border: solid 1px;
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 20px;
+  flex-basis: 40%;
 }
 
 .beerInfo {
   padding: 20px;
+}
+
+.commentsBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
