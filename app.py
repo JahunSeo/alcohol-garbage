@@ -52,7 +52,7 @@ app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
 def main():
     username = get_jwt_identity()
     # search query 확인하기
-    search_text = request.args.get('text')
+    search_text = request.args.get('text', "")
     search_abv = request.args.get('abv_lv')
     abv_obj = {
         "1": {"checked": False, "text": "0.0% ~ 1.9%", 'gte': 0, "lt": 2},

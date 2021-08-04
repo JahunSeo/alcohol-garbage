@@ -19,13 +19,19 @@
     <input
       class="input"
       type="text"
-      placeholder="맥주명을 입력해 주세요"
-      id="searchInput"
+      placeholder="검색할 맥주의 이름을 입력해주세요."
+      id="search-text"
       value="{{ search_text }}"
     />
   </p>
   <p class="control">
-    <a class="button is-info filter">검색</a>
+    <button
+      class="button is-info filter"
+      type="submit"
+      onclick="submitSearch()"
+    >
+      검색
+    </button>
   </p>
 </div>
 <div id="app" class="row columns is-multiline">
