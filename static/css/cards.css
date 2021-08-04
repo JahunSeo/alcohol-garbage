@@ -22,3 +22,11 @@
   padding: auto;
   margin: 0;
 }
+
+.beerCard {
+  height: 460px;
+}
+
+.beerImage {
+  height: 300px;
+}
