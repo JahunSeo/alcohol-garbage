@@ -34,7 +34,7 @@ def add_review():
         return jsonify({"status": 500, "msg": str(e)})
 
 
-@routes.route("/api/review/update", method=["POST"])
+@routes.route("/api/review/update", methods=["POST"])
 def update_review():
     try:
         formdata = request.form
@@ -58,7 +58,7 @@ def update_review():
         return jsonify({"status": 500, "msg": str(e)})
 
 
-@routes.route("/api/review/delete", method=["POST"])
+@routes.route("/api/review/delete", methods=["POST"])
 def delete_review():
     try:
         # 데이터 확인하기
