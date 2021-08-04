@@ -106,7 +106,6 @@ def show_beer(_id):
             review["_id"] = str(review["_id"])
             review["beer_id"] = str(review["beer_id"])
         
-        print(112233, reviews)
         if username is None:
             return render_template("detail.html", beer=beer, reviews=reviews)
         else:

@@ -24,7 +24,6 @@ def user_login():
          raise Exception("잘못된 사용자 이름입니다.")
       # 비밀번호 체크하기
       check_pw = bcrypt.checkpw(password.encode('utf-8'), user["password"].encode('utf-8'))
-      print(username, password, check_pw)
       if not check_pw:
          raise Exception("잘못된 비밀번호입니다.")
       # token 생성하기
