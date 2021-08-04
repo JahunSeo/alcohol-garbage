@@ -27,6 +27,8 @@
       .base-section {
         position: relative;
         z-index: 1;
+        max-width: 1000px;
+        margin: 0 auto;
       }
 
       .login-section {
@@ -339,7 +341,7 @@
     </div>
     </div>
 
-    <div class="section" id="base-section">
+    <div class="section base-section">
       <div class="headerBox">
         {% if username %}
         <div class="login-user-message">{{ username }}님 안녕하세요 :)</div>

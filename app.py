@@ -54,12 +54,13 @@ def main():
     # search query 확인하기
     search_text = request.args.get('text', "")
     search_abv = request.args.get('abv_lv')
+    search_sort = request.args.get("sort", -1)
     abv_obj = {
-        "1": {"checked": False, "text": "0.0% ~ 1.9%", 'gte': 0, "lt": 2},
-        "2": {"checked": False, "text": "2.0% ~ 3.9%", 'gte': 2, "lt": 4},
-        "3": {"checked": False, "text": "4.0% ~ 5.9%", 'gte': 4, "lt": 6},
-        "4": {"checked": False, "text": "6.0% ~ 7.9%", 'gte': 6, "lt": 8},
-        "5": {"checked": False, "text": "8.0% ~ ", 'gte': 8, "lt": 999},
+        "1": {"checked": False, "text": "2.0% ~ 3.9%", 'gte': 2, "lt": 4},
+        "2": {"checked": False, "text": "4.0% ~ 5.9%", 'gte': 4, "lt": 6},
+        "3": {"checked": False, "text": "6.0% ~ 7.9%", 'gte': 6, "lt": 8},
+        "4": {"checked": False, "text": "8.0% ~ 9.9%", 'gte': 8, "lt": 10},
+        "5": {"checked": False, "text": "10.0% ~ ", 'gte': 10, "lt": 999},
     }
     # $match 구성
     match_info = {}
@@ -78,6 +79,7 @@ def main():
     beers = db.beers.aggregate([
                 {"$match": match_info},
                 {"$lookup": {"from": "reviews", "localField": "_id", "foreignField": "beer_id", "as": "reviews"}},
+                { "$sort" : { "abv" : search_sort } }
             ])
     beers = list(beers)
     # beer에 reviewCount 추가 등 조작
