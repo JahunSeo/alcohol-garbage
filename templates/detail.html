@@ -1,5 +1,5 @@
 {% extends 'base.html'%} {% block content%}
-<div class="detail-wrap">
+<div class="box detail-wrap">
   <section class="hero">
     <div class="hero-body beerInfo">
       <div class="container has-text-centered">
@@ -11,12 +11,12 @@
           </div>
           <div class="column is-6 is-offset-1">
             <h1 id="beerName" class="title" data-id="{{ beer['_id'] }}">
-              제품명 : {{beer['name']}}
+              {{beer['name']}}
             </h1>
             <br />
-            <h2 class="subtitle is-4">abv : {{beer['abv']}}</h2>
-            <h2 class="subtitle is-4">원산지 : {{beer['country']}}</h2>
-            <h2 class="subtitle is-4">제조사 : {{beer['manufacturer']}}</h2>
+            <h2 class="subtitle is-4 detail-beer-abv">(avb) {{beer['abv']}} %</h2>
+            <h2 class="subtitle is-4 detail-beer-country">{{beer['country']}} 산</h2>
+            <h2 class="subtitle is-4 detail-beer-manufacturer">by {{beer['manufacturer']}}</h2>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@
           <div class="level-left">
             <div class="level-item">
               <button
-                class="button is-info"
+                class="button is-success"
                 type="submit"
                 onclick="addReview()"
                 data-id="{{ username['_id'] }}"
