@@ -1,7 +1,7 @@
 from flask import jsonify, request
 from . import routes
 from bson.objectid import ObjectId
-
+import datetime
 from app import db
 
 
@@ -28,6 +28,8 @@ def add_review():
         review["beer_id"] = ObjectId(beer_id)
         review["score"] = score
         review["comment"] = comment
+        review["created_at"] = datetime.datetime.utcnow()
+        review["updated_at"] = datetime.datetime.utcnow()
         # 저장하기
         db.reviews.insert_one(review)
         return jsonify({"status": 200, "msg": "리뷰 저장하기 성공"})
@@ -52,6 +54,7 @@ def update_review():
         review = {}
         review["score"] = score
         review["comment"] = comment
+        review["updated_at"] = datetime.datetime.utcnow()
         # 수정하기
         db.reviews.update_one({"_id": ObjectId(_id)}, {"$set": review})
         return jsonify({"status": 200, "msg": "리뷰 수정하기 성공"})

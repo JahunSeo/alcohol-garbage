@@ -51,17 +51,46 @@ app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
 @jwt_required(optional=True)
 def main():
     username = get_jwt_identity()
+    search_text = request.args.get('text')
+    search_abv = request.args.get('abv_lv')
+
+    print(1212, search_text, search_abv)
+    match_info = {}
+    if search_text is not None:
+        match_info["name"] = { "$regex": search_text }
+    if search_abv is not None:
+        match_info["$or"] = []
+        search_abv = map(int, search_abv.split(","))
+        print("searchabv", search_abv)
+        for abv in search_abv:
+            if abv == 1:
+                match_info["$or"].append({"abv": { "$gte": 0, "$lt": 2 }})
+            if abv == 2:
+                match_info["$or"].append({"abv": { "$gte": 2, "$lt": 4 }})
+            if abv == 3:
+                match_info["$or"].append({"abv": { "$gte": 4, "$lt": 6 }})
+            if abv == 4:
+                match_info["$or"].append({"abv": { "$gte": 6, "$lt": 8 }})
+            if abv == 5:
+                match_info["$or"].append({"abv": { "$gte": 8, "$lt": 10 }})
+
+    print(match_info)
+    # TODO: aggregate로 review sorting하기
+    beers = db.beers.aggregate([
+                {"$match": match_info},
+                {"$lookup": {"from": "reviews", "localField": "_id", "foreignField": "beer_id", "as": "reviews"}},
+            ])
+    beers = list(beers)
+    for beer in beers:
+        beer["_id"] = str(beer["_id"])
+        beer["reviews"] = sorted(beer["reviews"], reverse=True, key=lambda beer: beer["created_at"])
+        beer["reviewCount"] = len(beer["reviews"])
+
+    # print(121212, beers[0])
+
     if username is None:
-        beers = db.beers.find({})
-        beers = list(beers)
-        for beer in beers:
-            beer["_id"] = str(beer["_id"])
         return render_template("index.html", beersList=beers)
     else:
-        beers = db.beers.find({})  # TODO: join reviews
-        beers = list(beers)
-        for beer in beers:
-            beer["_id"] = str(beer["_id"])
         return render_template("index.html", beersList=beers, username=username)
 
 
@@ -71,7 +100,7 @@ def show_beer(_id):
     try:
         username = get_jwt_identity()
         beer = db.beers.find_one({"_id": ObjectId(_id)})
-        reviews = db.reviews.find({"beer_id": ObjectId(_id)})
+        reviews = db.reviews.find({"beer_id": ObjectId(_id)}).sort([("created_at", -1)])
         reviews = list(reviews)
         for review in reviews:
             review["_id"] = str(review["_id"])
