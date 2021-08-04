@@ -65,19 +65,21 @@ def main():
         return render_template("index.html", beersList=beers, username=username)
 
 
-@app.route("/beer/<id>")
+@app.route("/beer/<_id>")
 @jwt_required(optional=True)
-def show_beer(id):
+def show_beer(_id):
     try:
         username = get_jwt_identity()
+        beer = db.beers.find_one({"_id": ObjectId(_id)})
+        reviews = db.reviews.find({"beer_id": _id})
+        reviews = list(reviews)
+        for review in reviews:
+            review["_id"] = str(review["_id"])
+        print(beer, reviews)
         if username is None:
-            beer = db.beers.find_one(
-                {"_id": ObjectId(id)})  # TODO: join reviews
-            return render_template("detail.html", beer=beer)
+            return render_template("detail.html", beer=beer, reviews=reviews )
         else:
-            # TODO: join reviews + user's review
-            beer = db.beers.find_one({"_id": ObjectId(id)})
-            return render_template("detail.html", beer=beer, username=username)
+            return render_template("detail.html", beer=beer, reviews=reviews, username=username)
 
     except Exception as e:
         return redirect(url_for('main'))

@@ -15,7 +15,7 @@ def get_beer():
 
 @routes.route("/api/beer/list")
 def get_beer_list():
-    # 로그인되어 있는 경우, 각 맥주들에 대한 평가 정보 join
+    # TODO: 로그인되어 있는 경우, 각 맥주들에 대한 평가 정보 join
     beers = db.beers.find({}).sort([("created_at", -1)])
     return jsonify({"status": 200, "msg": "맥주 리스트 불러오기 성공", "beers": beers})
 
