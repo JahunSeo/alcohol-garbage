@@ -14,11 +14,12 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
     />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/star.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/detail.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/beer_detail.css') }}">
     <link rel="shortcut icon" type="image/x-icon" href="https://image.flaticon.com/icons/png/512/571/571530.png">
-    <script src="{{ url_for('static', filename='js/addComment.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/addComment.js') }}">    </script>
     <title>알쓰극복일기</title>
     <style type="text/css">
       .base-section {
@@ -195,11 +196,10 @@
         });
       }
     </script>
-    <script>
-      const addComment = new AddComment();
-    </script>
+ 
+    
   </head>
-  <body class="mainBody">
+  <body id="alcohol" class="mainBody">
   <div class="login-section" id="login-section">
    <div id="login-overlay"></div>
     <div class="login-wrap" id="login-popup">
@@ -292,7 +292,5 @@
       {% block content %}
       
       {% endblock %}
-
-      
   </body>
 </html>
