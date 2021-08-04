@@ -55,6 +55,7 @@ def main():
     search_text = request.args.get('text')
     search_abv = request.args.get('abv_lv')
     # $match 구성
+    abv_checked = {}
     match_info = {}
     if search_text is not None:
         match_info["name"] = { "$regex": search_text }
@@ -64,14 +65,19 @@ def main():
         print("searchabv", search_abv)
         for abv in search_abv:
             if abv == 1:
+                abv_checked["1"] = True
                 match_info["$or"].append({"abv": { "$gte": 0, "$lt": 2 }})
             if abv == 2:
+                abv_checked["2"] = True
                 match_info["$or"].append({"abv": { "$gte": 2, "$lt": 4 }})
             if abv == 3:
+                abv_checked["3"] = True
                 match_info["$or"].append({"abv": { "$gte": 4, "$lt": 6 }})
             if abv == 4:
+                abv_checked["4"] = True
                 match_info["$or"].append({"abv": { "$gte": 6, "$lt": 8 }})
             if abv == 5:
+                abv_checked["5"] = True
                 match_info["$or"].append({"abv": { "$gte": 8, "$lt": 10 }})
     # TODO: aggregate로 review sorting하기
     beers = db.beers.aggregate([
@@ -86,9 +92,9 @@ def main():
         beer["reviewCount"] = len(beer["reviews"])
 
     if username is None:
-        return render_template("index.html", beersList=beers)
+        return render_template("index.html", beersList=beers, search_text=search_text, abv_checked=abv_checked)
     else:
-        return render_template("index.html", beersList=beers, username=username)
+        return render_template("index.html", beersList=beers,search_text=search_text, abv_checked=abv_checked, username=username)
 
 @app.route("/beer/<_id>")
 @jwt_required(optional=True)
