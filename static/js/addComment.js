@@ -17,26 +17,30 @@
 //     );
 //   };
 // }
+// let comment = $(“#review-comment”).val();
+//   let score = $(“input[name=rating]:checked”).val();
 
-function submitComment() {
-  console.log("submit comment!");
-  let comment = $("#review-comment").val();
-  let score = $("input[name=rating]:checked").val();
-}
-
-function submitSignUp() {
+function addReview() {
+  console.log({
+    username: $("#commentUser").attr("data-id"),
+    beer_id: $("#beerName").attr("data-id"),
+    score: $("input[name=rating]:checked").val(),
+    comment: $("#review-comment").val(),
+  });
   $.ajax({
     type: "POST",
-    url: "/api/user/register",
+    url: "/api/review/add",
     data: {
-      username: $("#signUp-username-box").val(),
-      password: $("#signUp-password-box").val(),
+      username: $("#commentUser").attr("data-id"),
+      beer_id: $("#beerName").attr("data-id"),
+      score: $("input[name=rating]:checked").val(),
+      comment: $("#review-comment").val(),
     },
     success: function (response) {
       console.log(response);
       if (response["status"] == 200) {
-        alert("회원가입이 완료되었습니다.");
-        window.location.href = "/";
+        alert("리뷰 업로드가 완료되었습니다.");
+        window.location.reload();
       } else {
         alert(response["msg"]);
       }

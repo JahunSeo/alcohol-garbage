@@ -30,3 +30,7 @@
 .beerImage {
   height: 300px;
 }
+
+.beerImg {
+  object-fit: contain;
+}

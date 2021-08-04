@@ -5,12 +5,14 @@
       <div class="container has-text-centered">
         <div class="columns is-vcentered">
           <div class="column is-5">
-            <figure class="image is-4by3">
-              <img src="{{ beer['image'] }}" alt="맥주사진" />
+            <figure class="image is-4by3" class="beerImg">
+              <img class="beerImg" src="{{ beer['image'] }}" alt="맥주사진" />
             </figure>
           </div>
           <div class="column is-6 is-offset-1">
-            <h1 class="title">제품명 : {{beer['name']}}</h1>
+            <h1 id="beerName" class="title" data-id="{{ beer['_id'] }}">
+              제품명 : {{beer['name']}}
+            </h1>
             <br />
             <h2 class="subtitle is-4">abv : {{beer['abv']}}</h2>
             <h2 class="subtitle is-4">원산지 : {{beer['country']}}</h2>
@@ -21,7 +23,8 @@
     </div>
   </section>
 </div>
-<div>
+{% if username %}
+<div id="commentUser" data-id="{{ username }}">
   <div class="addComment">
     <article class="media">
       <div class="media-content">
@@ -53,7 +56,8 @@
               <button
                 class="button is-info"
                 type="submit"
-                onclick="submitComment()"
+                onclick="addReview()"
+                data-id="{{ username['_id'] }}"
               >
                 추가
               </button>
@@ -64,6 +68,7 @@
     </article>
   </div>
 </div>
+{% else %} {% endif %}
 <div class="commentsBox">
   {% for review in reviews %} {% if review['username'] == username %}
   <div class="myCommentsBox">
