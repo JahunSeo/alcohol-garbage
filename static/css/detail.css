@@ -14,12 +14,23 @@
   justify-content: center;
   height: 150px;
 }
+
+.commentsBox {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  align-items: center;
+  justify-content: space-around;
+  /* flex-wrap: wrap; */
+}
+
 .myCommentsBox {
   border: solid 0.5px;
   margin: 1rem;
   padding: 1rem;
   border-radius: 20px;
-  width: 400px;
+  width: 90%;
+  /* max-width: 380px; */
   box-sizing: border-box;
   float: left;
   background-color: #ccffcc;
@@ -32,17 +43,10 @@
   margin: 1rem;
   padding: 1rem;
   border-radius: 20px;
-  width: 400px;
+  width: 90%;
+  /* max-width: 380px; */
   float: right;
   box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.5);
-}
-
-.commentsBox {
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: space-around;
-  flex-wrap: wrap;
 }
 
 .beerImg {
