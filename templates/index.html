@@ -1,71 +1,64 @@
-{% extends 'base.html' %}
-
-{% block content%}
-      <div id="beerFilter" class="field is-grouped">
-        <p class="control is-expanded">
-          <input
-            class="input"
-            type="text"
-            placeholder="맥주명을 입력해 주세요"
-          />
-        </p>
-        <p class="control">
-          <a class="button is-info filter"> 검색 </a>
-        </p>
+{% extends 'base.html' %} {% block content%}
+<section>
+  <div class="SearchAbv">
+    <label>알콜 도수</label>
+    <div>
+      {% for abvkey, abv in abv_obj.items() %}
+      <div class="AbvCheckbox">
+        <input class="AbvCheckbox__input" type="checkbox" id="search-abv-{{
+        abvkey }}" name="search-abv-{{abvkey}}" {% if abv['checked'] %} checked
+        {% endif %} />
+        <label class="AbvCheckbox__label" for="scales">{{ abv["text"] }}</label>
       </div>
-      <div>
-        <div class="checkbox">
-          <label class="is-size-5">도수</label>
-          <br />
-          <label class="checkbox">
-            <input type="checkbox" />
-            0~1% 미만
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" />
-            1~2% 미만
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" />
-            2~3% 미만
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" />
-            3~4% 미만
-          </label>
-          <label class="checkbox">
-            <input type="checkbox" />
-            5~6% 미만
-          </label>
-        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<div id="beerFilter" class="field is-grouped">
+  <p class="control is-expanded">
+    <input
+      class="input"
+      type="text"
+      placeholder="검색할 맥주의 이름을 입력해주세요."
+      id="search-text"
+      value="{{ search_text }}"
+    />
+  </p>
+  <p class="control">
+    <button
+      class="button is-info filter"
+      type="submit"
+      onclick="submitSearch()"
+    >
+      검색
+    </button>
+  </p>
+</div>
+<div id="app" class="row columns is-multiline">
+  {% for beer in beersList %}
+  <div class="column is-3">
+    <div class="card large beerCard">
+      <div class="card-image">
+        <figure class="image is-16by9 beerImage">
+          <a href="/beer/{{ beer['_id']}}">
+            <img
+              class="beerImg"
+              src="{{ beer['image'] }}"
+              alt="맥주 이미지 "
+              data-id="{{ beer['_id']}}"
+            />
+          </a>
+        </figure>
       </div>
-      <div id="app" class="row columns is-multiline">
-        {% for beer in beersList %}
-        <div class="column is-3">
-          <div class="card large beerCard">
-            <div class="card-image">
-              <figure class="image is-16by9 beerImage">
-                <a href="/beer/{{ beer['_id']}}">                
-                  <img class="beerImg" src="{{ beer['image'] }}" alt="맥주 이미지 " data-id="{{ beer['_id']}}" />
-                </a>
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-content">
-                  <p class="title is-4 no-padding">{{ beer['name'] }}</p>
-                </div>
-              </div>
-              <div class="content">별점자리</div>
-              <div class="content">한줄평 자리</div>
-            </div>
+      <div class="card-content">
+        <div class="media">
+          <div class="media-content">
+            <p class="title is-4 no-padding">{{ beer['name'] }}</p>
           </div>
         </div>
-        {% endfor %}
       </div>
     </div>
-
+  </div>
+  {% endfor %}
+</div>
 {% endblock %}
