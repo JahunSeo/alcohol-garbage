@@ -10,6 +10,7 @@
   align-items: center;
   justify-content: center;
   height: 150px;
+  /* background-image: url(static/img/beer_background.jpg); */
 }
 
 .mainTitle {
@@ -29,4 +30,19 @@
 
 .beerImage {
   height: 300px;
+}
+
+#abv-box {
+  padding: 20px;
+}
+
+#abv-checkbox {
+  float: right;
+  /* white-space : nowrap; */
+  font-size: x-large;
+}
+
+#abv-title {
+  font-size: large;
+  float : left;
 }
