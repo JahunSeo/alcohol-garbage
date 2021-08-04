@@ -3,51 +3,14 @@
   <div class="SearchAbv">
     <label>알콜 도수</label>
     <div>
+      {% for abvkey, abv in abv_obj.items() %}
       <div class="AbvCheckbox">
-        <input
-          class="AbvCheckbox__input"
-          type="checkbox"
-          id="search-abv-1"
-          name="search-abv-1"
-        />
-        <label class="AbvCheckbox__label" for="scales">0.0% ~ 2.9%</label>
+        <input class="AbvCheckbox__input" type="checkbox" id="search-abv-{{
+        abvkey }}" name="search-abv-{{abvkey}}" {% if abv['checked'] %} checked
+        {% endif %} />
+        <label class="AbvCheckbox__label" for="scales">{{ abv["text"] }}</label>
       </div>
-      <div class="AbvCheckbox">
-        <input
-          class="AbvCheckbox__input"
-          type="checkbox"
-          id="search-abv-2"
-          name="search-abv-2"
-        />
-        <label class="AbvCheckbox__label" for="scales">2.0% ~ 3.9%</label>
-      </div>
-      <div class="AbvCheckbox">
-        <input
-          class="AbvCheckbox__input"
-          type="checkbox"
-          id="search-abv-3"
-          name="search-abv-3"
-        />
-        <label class="AbvCheckbox__label" for="scales">4.0% ~ 5.9%</label>
-      </div>
-      <div class="AbvCheckbox">
-        <input
-          class="AbvCheckbox__input"
-          type="checkbox"
-          id="search-abv-4"
-          name="search-abv-4"
-        />
-        <label class="AbvCheckbox__label" for="scales">6.0% ~ 7.9%</label>
-      </div>
-      <div class="AbvCheckbox">
-        <input
-          class="AbvCheckbox__input"
-          type="checkbox"
-          id="search-abv-5"
-          name="search-abv-5"
-        />
-        <label class="AbvCheckbox__label" for="scales">8.0% ~ </label>
-      </div>
+      {% endfor %}
     </div>
   </div>
 </section>
@@ -58,6 +21,7 @@
       type="text"
       placeholder="맥주명을 입력해 주세요"
       id="searchInput"
+      value="{{ search_text }}"
     />
   </p>
   <p class="control">

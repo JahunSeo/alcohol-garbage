@@ -54,31 +54,26 @@ def main():
     # search query 확인하기
     search_text = request.args.get('text')
     search_abv = request.args.get('abv_lv')
+    abv_obj = {
+        "1": {"checked": False, "text": "0.0% ~ 1.9%", 'gte': 0, "lt": 2},
+        "2": {"checked": False, "text": "2.0% ~ 3.9%", 'gte': 2, "lt": 4},
+        "3": {"checked": False, "text": "4.0% ~ 5.9%", 'gte': 4, "lt": 6},
+        "4": {"checked": False, "text": "6.0% ~ 7.9%", 'gte': 6, "lt": 8},
+        "5": {"checked": False, "text": "8.0% ~ ", 'gte': 8, "lt": 999},
+    }
     # $match 구성
-    abv_checked = {}
     match_info = {}
     if search_text is not None:
         match_info["name"] = { "$regex": search_text }
     if search_abv is not None:
+        search_abv = search_abv.split(",")
         match_info["$or"] = []
-        search_abv = map(int, search_abv.split(","))
-        print("searchabv", search_abv)
-        for abv in search_abv:
-            if abv == 1:
-                abv_checked["1"] = True
-                match_info["$or"].append({"abv": { "$gte": 0, "$lt": 2 }})
-            if abv == 2:
-                abv_checked["2"] = True
-                match_info["$or"].append({"abv": { "$gte": 2, "$lt": 4 }})
-            if abv == 3:
-                abv_checked["3"] = True
-                match_info["$or"].append({"abv": { "$gte": 4, "$lt": 6 }})
-            if abv == 4:
-                abv_checked["4"] = True
-                match_info["$or"].append({"abv": { "$gte": 6, "$lt": 8 }})
-            if abv == 5:
-                abv_checked["5"] = True
-                match_info["$or"].append({"abv": { "$gte": 8, "$lt": 10 }})
+        for key in search_abv:
+            if key not in abv_obj: continue
+            abv_obj[key]["checked"] = True
+            match_info["$or"].append({"abv": { "$gte": abv_obj[key]["gte"], "$lt": abv_obj[key]["lt"] }})
+        if len(match_info["$or"]) < 1:
+            match_info.pop("$or", None)
     # TODO: aggregate로 review sorting하기
     beers = db.beers.aggregate([
                 {"$match": match_info},
@@ -92,9 +87,9 @@ def main():
         beer["reviewCount"] = len(beer["reviews"])
 
     if username is None:
-        return render_template("index.html", beersList=beers, search_text=search_text, abv_checked=abv_checked)
+        return render_template("index.html", beersList=beers, search_text=search_text, abv_obj=abv_obj)
     else:
-        return render_template("index.html", beersList=beers,search_text=search_text, abv_checked=abv_checked, username=username)
+        return render_template("index.html", beersList=beers,search_text=search_text, abv_obj=abv_obj, username=username)
 
 @app.route("/beer/<_id>")
 @jwt_required(optional=True)
