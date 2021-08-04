@@ -1,329 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css"
+{% extends 'base.html' %} {% block content%}
+<section>
+  <div class="SearchAbv">
+    <label>알콜 도수</label>
+    <div>
+      {% for abvkey, abv in abv_obj.items() %}
+      <div class="AbvCheckbox">
+        <input class="AbvCheckbox__input" type="checkbox" id="search-abv-{{
+        abvkey }}" name="search-abv-{{abvkey}}" {% if abv['checked'] %} checked
+        {% endif %} />
+        <label class="AbvCheckbox__label" for="scales">{{ abv["text"] }}</label>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+<div id="beerFilter" class="field is-grouped">
+  <p class="control is-expanded">
+    <input
+      class="input"
+      type="text"
+      placeholder="검색할 맥주의 이름을 입력해주세요."
+      id="search-text"
+      value="{{ search_text }}"
     />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/cards.css') }}">
-    <title>알쓰극복일기</title>
-    <style type="text/css">
-      .base-section {
-        position: relative;
-        z-index: 1;
-      }
-
-      .login-section {
-        position: relative;
-        display: none;
-        z-index: 3;
-      }
-
-      .signUp-section {
-        position: relative;
-        display: none;
-        z-index: 3;
-      }
-
-      #login-overlay {
-        position: fixed;
-        display: block;
-        width: 100%;
-        height: 100%;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background-color: rgba(0, 0, 0, 0.5);
-        cursor: pointer;
-      }
-
-      #login-popup {
-        position: fixed;
-        display: inline;
-        left: 30%;
-        right: 30%;
-        width: 430px;
-        height: auto;
-        padding: 40px;
-        background-color: rgba(100, 300, 100, 1);
-        margin: 5% auto;
-        border-radius: 10px;
-        display: inline-block;
-    }
-    
-    #signUp-overlay {
-      position: fixed;
-      display: block;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-color: rgba(0,0,0,0.5);
-      cursor: pointer;
-    }
-
-      #signUp-popup {
-        position: fixed;
-        left: 30%;
-        right: 30%;
-        width: 470px;
-        height: auto;
-        padding: 40px;
-        background-color: rgba(100, 300, 100, 1);
-        margin: 5% auto;
-        border-radius: 10px;
-        display: inline-block;
-    }
-    
-    #close-button {
-      float: right;
-    }
-
-    #login-username-box, #login-password-box #signUp-repassword-box #signUp-username-box #signUp-password-box
-    {
-      width: 350px;
-    }
-
-      .input {
-        font-style: italic;
-      }
-
-      .submitField {
-        text-align: center;
-      }
-
-    .test-box {
-        position: fixed;
-        width: 700px;
-        height: 700px;
-        padding: 40px;
-
-        background-color: yellow;
-    }
-
-    </style>
-
-     <script>
-      function showLogin() {
-        $('#login-section').show();
-      }
-
-      function closeLogin() {
-        $('#login-section').hide();
-      }
-
-      function submitLogin() {
-        $.ajax({
-          type: "POST",
-          url: "/api/user/login",
-          data: { 
-              username : $('#login-username-box').val(), 
-              password : $('#login-password-box').val(), 
-              },
-          success: function(response) {
-            if (response['status'] == 200) {
-              alert('로그인이 완료되었습니다.')
-              window.location.href='/'
-            } else{
-              alert(response['msg'])
-            }
-          },
-        });
-      }
-
-      function showSignUp() {
-          $('#login-section').hide();
-          $('#signUp-section').show();
-      }
-
-      function closeSignUp() {
-        $('#signUp-section').hide();
-      }
-
-      function submitSignUp() {
-        $.ajax({
-          type: "POST",
-          url: "/api/user/register",
-          data: { 
-              username : $('#signUp-username-box').val(), 
-              password : $('#signUp-password-box').val(), 
-              },
-          success: function(response) {
-            console.log(response)
-            if (response['status'] == 200) {
-              alert('회원가입이 완료되었습니다.')
-              window.location.href='/'
-            } else{
-              alert(response['msg'])
-            }
-          },
-        });
-      }
-    </script>
-  </head>
-  <body class="mainBody">
-  <div class="login-section" id="login-section">
-   <div id="login-overlay"></div>
-    <div class="login-wrap" id="login-popup">
-      <button class="button is-dark" id="close-button" onclick="closeLogin()">CLOSE</button>
-        <h1 class="title is-1">LOGIN</h1>
-        <div class="username-field">
-          <label class="label" id="login-label-username">Username</label>
-          <div class="control">
-            <input class="input" type="text" id="login-username-box" placeholder="Username을 입력해주세요">
-          </div>
-        </div>
-        <br/>
-        <div class="pw-field">
-          <label class="label" id="login-label-password">Password</label>
-          <div class="control">
-            <input class="input" type="password" id="login-password-box" placeholder="Password를 입력해주세요">
-          </div>
-        </div>
-        <br/>   
-    <div class="submitField">
-    <p class="control">
-        <button class="button is-primary is-rounded" onClick="submitLogin()">
-        Submit
-        </button>
-        <button class="button is-success is-rounded" onclick="showSignUp()">
-        Sign Up
-        </button>
-    </p>
-    </div>
-    </div>
-    </div>
-    </div>
-
-
-  <div class="signUp-section" id="signUp-section">
-    <div id="signUp-overlay"></div>
-    <div class="signUp-wrap" id="signUp-popup">
-      <button class="button is-dark" id="close-button" onclick="closeSignUp()">CLOSE</button>
-        <h1 class="title is-1">Sign Up</h1>
-    <div class="username-field">
-          <label class="label" id="signup-label-username">Username</label>
-          <div class="control">
-            <input class="input" type="text" id="signUp-username-box" placeholder="Username을 입력해주세요">
-          </div>
-        </div>
-        <br/>
-        <div class="pw-field">
-          <label class="label" id="signup-label-password">Password</label>
-          <div class="control">
-            <input class="input" type="password" id="signUp-password-box" placeholder="Password를 입력해주세요">
-          </div>
-        </div>
-        <br/>
-        <div class="pw-check-field">
-          <label class="label" id="signup-label-repassword">Re_Password</label>
-          <div class="control">
-            <input class="input" type="password" id="signUp-repassword-box" placeholder="Password를 다시 한번 입력해주세요">
-          </div>
-        </div>
-        <br/>
-    <div class="submitField">
-    <p class="control">
-        <button class="button is-primary is-rounded" onclick="submitSignUp()">
-        Submit
-        </button>
-    </p>
-    </div>
-    </div>
-    </div>
-    </div>
-
-    <div class="section" id="base-section">
-      <div class="headerBox">
-        {% if username %}
-        <div>{{ username }}</div>
-        {% else %}
-        <button class="button is-success is-rounded" onclick="showLogin()">로그인</button>
-        {% endif %}
-        
+  </p>
+  <p class="control">
+    <button
+      class="button is-info filter"
+      type="submit"
+      onclick="submitSearch()"
+    >
+      검색
+    </button>
+  </p>
+</div>
+<div id="app" class="row columns is-multiline">
+  {% for beer in beersList %}
+  <div class="column is-3">
+    <div class="card large beerCard">
+      <div class="card-image">
+        <figure class="image is-16by9 beerImage">
+          <a href="/beer/{{ beer['_id']}}">
+            <img
+              src="{{ beer['image'] }}"
+              alt="맥주 이미지 "
+              data-id="{{ beer['_id']}}"
+            />
+          </a>
+        </figure>
       </div>
-      <div class="titleBox">
-        <div class="column has-text-centered">
-          <h1 class="title mainTitle">알쓰 극복 일기</h1>
+      <div class="card-content">
+        <div class="media">
+          <div class="media-content">
+            <p class="title is-4 no-padding">{{ beer['name'] }}</p>
+          </div>
         </div>
       </div>
-      <div class="field is-grouped">
-        <p class="control is-expanded">
-          <input
-            class="input"
-            type="text"
-            placeholder="맥주명을 입력해 주세요"
-          />
-        </p>
-        <p class="control">
-          <a class="button is-info"> 검색 </a>
-        </p>
-      </div>
-      <div>
-        <div class="checkbox">
-          <label class="is-size-5">도수</label>
-          <br />
-          <label class="checkbox">
-            <input type="checkbox" />
-            0~1% 미만
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" />
-            1~2% 미만
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" />
-            2~3% 미만
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" />
-            3~4% 미만
-          </label>
-          <label class="checkbox">
-            <input type="checkbox" />
-            5~6% 미만
-          </label>
-        </div>
-      </div>
-      <div id="app" class="row columns is-multiline">
-        {% for beer in beersList %}
-        <div class="column is-4">
-          <div class="card large">
-            <div class="card-image">
-              <figure class="image is-16by9">
-                <a href="/beer/{{ beer['_id']}}">                
-                  <img src="" alt="맥주 이미지 " data-id="{{ beer['_id']}}" />
-                </a>
-              </figure>
-            </div>
-            <div class="card-content">
-              <div class="media">
-                <div class="media-content">
-                  <p class="title is-4 no-padding">{{ beer['name'] }}</p>
-                </div>
-              </div>
-              <div class="content">별점자리</div>
-              <div class="content">한줄평 자리</div>
-            </div>
-          </div>
-        </div>
-        {% endfor %}
-      </div>
     </div>
-  </body>
-</html>
+  </div>
+  {% endfor %}
+</div>
+{% endblock %}

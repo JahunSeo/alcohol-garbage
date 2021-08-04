@@ -28,54 +28,86 @@ db = client.beerdb
 
 # 토큰 생성에 사용될 Secret Key를 flask 환경 변수에 등록
 app.config.update(
-			DEBUG = True,
-			JWT_SECRET_KEY = SECRET_KEY
-		)
+    DEBUG=True,
+    JWT_SECRET_KEY=SECRET_KEY
+)
 
 # JWT 확장 모듈을 flask 어플리케이션에 등록
 jwt = JWTManager(app)
 
 # JWT 쿠키 저장
-app.config['JWT_COOKIE_SECURE'] = False  # https를 통해서만 cookie가 갈 수 있는지 (production 에선 True)
+# https를 통해서만 cookie가 갈 수 있는지 (production 에선 True)
+app.config['JWT_COOKIE_SECURE'] = False
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
-app.config['JWT_ACCESS_COOKIE_PATH'] = '/'  # access cookie를 보관할 url (Frontend 기준)
-app.config['JWT_REFRESH_COOKIE_PATH'] = '/'  # refresh cookie를 보관할 url (Frontend 기준)
+# access cookie를 보관할 url (Frontend 기준)
+app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
+# refresh cookie를 보관할 url (Frontend 기준)
+app.config['JWT_REFRESH_COOKIE_PATH'] = '/'
 app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
 app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=3600)
-
 
 
 @app.route("/")
 @jwt_required(optional=True)
 def main():
     username = get_jwt_identity()
+    # search query 확인하기
+    search_text = request.args.get('text', "")
+    search_abv = request.args.get('abv_lv')
+    abv_obj = {
+        "1": {"checked": False, "text": "0.0% ~ 1.9%", 'gte': 0, "lt": 2},
+        "2": {"checked": False, "text": "2.0% ~ 3.9%", 'gte': 2, "lt": 4},
+        "3": {"checked": False, "text": "4.0% ~ 5.9%", 'gte': 4, "lt": 6},
+        "4": {"checked": False, "text": "6.0% ~ 7.9%", 'gte': 6, "lt": 8},
+        "5": {"checked": False, "text": "8.0% ~ ", 'gte': 8, "lt": 999},
+    }
+    # $match 구성
+    match_info = {}
+    if search_text is not None:
+        match_info["name"] = { "$regex": search_text }
+    if search_abv is not None:
+        search_abv = search_abv.split(",")
+        match_info["$or"] = []
+        for key in search_abv:
+            if key not in abv_obj: continue
+            abv_obj[key]["checked"] = True
+            match_info["$or"].append({"abv": { "$gte": abv_obj[key]["gte"], "$lt": abv_obj[key]["lt"] }})
+        if len(match_info["$or"]) < 1:
+            match_info.pop("$or", None)
+    # TODO: aggregate로 review sorting하기
+    beers = db.beers.aggregate([
+                {"$match": match_info},
+                {"$lookup": {"from": "reviews", "localField": "_id", "foreignField": "beer_id", "as": "reviews"}},
+            ])
+    beers = list(beers)
+    # beer에 reviewCount 추가 등 조작
+    for beer in beers:
+        beer["_id"] = str(beer["_id"])
+        beer["reviews"] = sorted(beer["reviews"], reverse=True, key=lambda beer: beer["created_at"])
+        beer["reviewCount"] = len(beer["reviews"])
+
     if username is None:
-        beers = db.beers.find({})
-        beers = list(beers)
-        for beer in beers:
-            beer["_id"] = str(beer["_id"])
-        return render_template("index.html", beersList=beers)
+        return render_template("index.html", beersList=beers, search_text=search_text, abv_obj=abv_obj)
     else:
-        beers = db.beers.find({}) # TODO: join reviews
-        beers = list(beers)
-        for beer in beers:
-            beer["_id"] = str(beer["_id"])
-        return render_template("index.html", beersList=beers, username=username)
+        return render_template("index.html", beersList=beers,search_text=search_text, abv_obj=abv_obj, username=username)
 
-
-@app.route("/beer/<id>")
+@app.route("/beer/<_id>")
 @jwt_required(optional=True)
-def show_beer(id):
+def show_beer(_id):
     try:
         username = get_jwt_identity()
+        beer = db.beers.find_one({"_id": ObjectId(_id)})
+        reviews = db.reviews.find({"beer_id": ObjectId(_id)}).sort([("created_at", -1)])
+        reviews = list(reviews)
+        for review in reviews:
+            review["_id"] = str(review["_id"])
+            review["beer_id"] = str(review["beer_id"])
         if username is None:
-            beer = db.beers.find_one({"_id": ObjectId(id)}) # TODO: join reviews
-            return render_template("detail.html", beer=beer)
+            return render_template("detail.html", beer=beer, reviews=reviews)
         else:
-            beer = db.beers.find_one({"_id": ObjectId(id)}) # TODO: join reviews + user's review
-            return render_template("detail.html", beer=beer, username=username)
-
+            return render_template("detail.html", beer=beer, reviews=reviews, username=username)
     except Exception as e:
+        print("[Error] Detail Page", e)
         return redirect(url_for('main'))
 
 
