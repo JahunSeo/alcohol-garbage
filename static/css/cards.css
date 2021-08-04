@@ -10,6 +10,7 @@
   align-items: center;
   justify-content: center;
   height: 150px;
+  min-width: 300px;
 }
 
 .mainTitle {
@@ -39,6 +40,8 @@
 .search-section {
   background-color: #eeeeee;
   padding: 30px 20px;
+  min-width: 250px;
+  height: auto;
 }
 
 .abv-title {
@@ -90,7 +93,8 @@
 
 .detail-wrap {
   position: center;
-  width: 950px;
+  height: auto;
+  min-width: 250px;
 }
 
 .detail-beer-manufacturer {
