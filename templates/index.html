@@ -1,6 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content%}
+      <section>
+        <div class="SearchAbv">
+          <label>알콜 도수</label>
+          <div>
+            <div class="AbvCheckbox">
+              <input class="AbvCheckbox__input" type="checkbox" id="search-abv-1" name="search-abv-1">
+              <label class="AbvCheckbox__label" for="scales">0.0% ~ 2.9%</label>
+            </div>
+            <div class="AbvCheckbox">
+              <input class="AbvCheckbox__input" type="checkbox" id="search-abv-2" name="search-abv-2">
+              <label class="AbvCheckbox__label" for="scales">2.0% ~ 3.9%</label>
+            </div>
+            <div class="AbvCheckbox">
+              <input class="AbvCheckbox__input" type="checkbox" id="search-abv-3" name="search-abv-3">
+              <label class="AbvCheckbox__label" for="scales">4.0% ~ 5.9%</label>
+            </div>
+            <div class="AbvCheckbox">
+              <input class="AbvCheckbox__input" type="checkbox" id="search-abv-4" name="search-abv-4">
+              <label class="AbvCheckbox__label" for="scales">6.0% ~ 7.9%</label>
+            </div>
+            <div class="AbvCheckbox">
+              <input class="AbvCheckbox__input" type="checkbox" id="search-abv-5" name="search-abv-5">
+              <label class="AbvCheckbox__label" for="scales">8.0% ~ </label>
+            </div>
+          </div>
+        </div>
+      </section>
       <div id="beerFilter" class="field is-grouped">
         <p class="control is-expanded">
           <input
@@ -10,37 +37,8 @@
           />
         </p>
         <p class="control">
-          <a class="button is-info filter"> 검색 </a>
+          <a class="button is-info filter">검색</a>
         </p>
-      </div>
-      <div>
-        <div class="checkbox">
-          <label class="is-size-5">도수</label>
-          <br />
-          <label class="checkbox">
-            <input type="checkbox" />
-            0~1% 미만
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" />
-            1~2% 미만
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" />
-            2~3% 미만
-          </label>
-
-          <label class="checkbox">
-            <input type="checkbox" />
-            3~4% 미만
-          </label>
-          <label class="checkbox">
-            <input type="checkbox" />
-            5~6% 미만
-          </label>
-        </div>
       </div>
       <div id="app" class="row columns is-multiline">
         {% for beer in beersList %}
