@@ -151,7 +151,7 @@
 
       function submitLogout() {
         $.ajax({
-          type: "POST",
+          type: "GET",
           url: "/api/user/logout",
           data: {},
           success: function(response) {
