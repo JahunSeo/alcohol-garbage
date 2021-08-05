@@ -37,7 +37,7 @@ jwt = JWTManager(app)
 
 # JWT 쿠키 저장
 # https를 통해서만 cookie가 갈 수 있는지 (production 에선 True)
-app.config['JWT_COOKIE_SECURE'] = True
+app.config['JWT_COOKIE_SECURE'] = False
 app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 # access cookie를 보관할 url (Frontend 기준)
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
