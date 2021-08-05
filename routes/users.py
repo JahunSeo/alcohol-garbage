@@ -27,7 +27,7 @@ def user_login():
       if not check_pw:
          raise Exception("잘못된 비밀번호입니다.")
       # token 생성하기
-      access_token = create_access_token(identity=username, expires_delta=False)
+      access_token = create_access_token(identity=username)
       refresh_token = create_refresh_token(identity=username)
       
       resp = jsonify({"status": 200, "msg": "사용자 로그인 성공"})

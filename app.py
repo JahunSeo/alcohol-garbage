@@ -43,8 +43,8 @@ app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
 # refresh cookie를 보관할 url (Frontend 기준)
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=10)
-app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=10)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=20)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=20)
 
 
 @app.route("/")
