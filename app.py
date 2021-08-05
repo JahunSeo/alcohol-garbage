@@ -43,8 +43,8 @@ app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
 # refresh cookie를 보관할 url (Frontend 기준)
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=30)
-app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=30)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=60)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=60)
 
 
 @jwt.expired_token_loader
@@ -61,7 +61,7 @@ def refresh_expiring_jwts(response):
     try:
         exp_timestamp = get_jwt()["exp"]
         now = datetime.datetime.now(datetime.timezone.utc)
-        target_timestamp = datetime.datetime.timestamp(now + datetime.timedelta(seconds=30))
+        target_timestamp = datetime.datetime.timestamp(now + datetime.timedelta(seconds=60))
         if target_timestamp > exp_timestamp:
             access_token = create_access_token(identity=get_jwt_identity())
             set_access_cookies(response, access_token)
