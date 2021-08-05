@@ -43,14 +43,19 @@ app.config['JWT_TOKEN_LOCATION'] = ['cookies']
 app.config['JWT_ACCESS_COOKIE_PATH'] = '/'
 # refresh cookie를 보관할 url (Frontend 기준)
 app.config['JWT_REFRESH_COOKIE_PATH'] = '/'
-app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=20)
-app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=20)
+app.config['JWT_ACCESS_TOKEN_EXPIRES'] = datetime.timedelta(seconds=30)
+app.config['JWT_REFRESH_TOKEN_EXPIRES'] = datetime.timedelta(seconds=30)
 
+
+@jwt.expired_token_loader
+def my_expired_token_callback(jwt_header, jwt_payload):
+    resp = redirect(url_for('main'))
+    unset_jwt_cookies(resp)
+    return resp
 
 @app.route("/")
 @jwt_required(optional=True)
 def main():
-    username = get_jwt_identity()
     # search query 확인하기
     search_text = request.args.get('text', "")
     search_abv = request.args.get('abv_lv')
@@ -92,10 +97,12 @@ def main():
             beer["reviewScore"] = sum(review["score"] for review in beer["reviews"]) / len(beer["reviews"])
             beer["reviewScore"] = round(beer["reviewScore"], 1)
 
+    username = get_jwt_identity()
     if username is None:
         return render_template("index.html", beersList=beers, search_text=search_text, abv_obj=abv_obj)
     else:
         return render_template("index.html", beersList=beers,search_text=search_text, abv_obj=abv_obj, username=username)
+
 
 @app.route("/beer/<_id>")
 @jwt_required(optional=True)
